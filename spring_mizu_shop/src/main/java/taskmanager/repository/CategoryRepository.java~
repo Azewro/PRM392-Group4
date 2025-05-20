@@ -1,0 +1,4 @@
+package taskmanager.repository;
+
+public class CategoryRepository {
+}

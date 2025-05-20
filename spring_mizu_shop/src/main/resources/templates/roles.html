@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo Spring</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <tr th:each="role : ${roles}">
+            <td th:text="${role.id}"></td>
+            <td th:text="${role.name}"></td>
+            <td th:text="${role.description}"></td>
+            <td><a th:href="@{/role-delete/{id}(id=${role.id})}">Delete</a></td>
+            <td><a th:href="@{/role-update/{id}(id=${role.id})}">Update</a></td>
+        </tr>
+    </table>
+</body>
+</html>
