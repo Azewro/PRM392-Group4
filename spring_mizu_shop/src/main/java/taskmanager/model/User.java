@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Data
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 @Builder
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String username;
@@ -26,9 +28,11 @@ public class User {
     private String avatar;
 
     @Column(nullable = false)
-    private String role; // "admin", "customer"
+    private String role = "customer"; // "admin", "customer"
 
-    private Boolean isActive;
+    private Boolean isActive = true;
+
+    @CreationTimestamp
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

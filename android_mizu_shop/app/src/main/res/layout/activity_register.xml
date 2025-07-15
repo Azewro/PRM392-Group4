@@ -12,24 +12,34 @@
         android:gravity="center">
 
         <TextView
-            android:id="@+id/tvTitle"
+            android:id="@+id/tvTitleRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Đăng nhập"
+            android:text="Đăng ký tài khoản"
             android:textSize="28sp"
             android:textStyle="bold"
             android:textColor="#1976D2"
             android:layout_marginBottom="32dp" />
 
         <EditText
-            android:id="@+id/etEmail"
+            android:id="@+id/etUsername"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:hint="Username"
             android:inputType="text"
             android:background="@drawable/bg_edittext_rounded"
             android:padding="12dp"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="12dp" />
+
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:background="@drawable/bg_edittext_rounded"
+            android:padding="12dp"
+            android:layout_marginBottom="12dp" />
 
         <EditText
             android:id="@+id/etPassword"
@@ -39,24 +49,54 @@
             android:inputType="textPassword"
             android:background="@drawable/bg_edittext_rounded"
             android:padding="12dp"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="12dp" />
 
-        <Button
-            android:id="@+id/btnLogin"
+        <EditText
+            android:id="@+id/etPhone"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="Đăng nhập"
+            android:hint="Phone"
+            android:inputType="phone"
+            android:background="@drawable/bg_edittext_rounded"
+            android:padding="12dp"
+            android:layout_marginBottom="12dp" />
+
+        <EditText
+            android:id="@+id/etAddress"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="Address"
+            android:inputType="text"
+            android:background="@drawable/bg_edittext_rounded"
+            android:padding="12dp"
+            android:layout_marginBottom="12dp" />
+
+        <EditText
+            android:id="@+id/etAvatar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="Avatar (URL hoặc tên file)"
+            android:inputType="text"
+            android:background="@drawable/bg_edittext_rounded"
+            android:padding="12dp"
+            android:layout_marginBottom="20dp" />
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Đăng ký"
             android:backgroundTint="#1976D2"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/bg_button_rounded" />
+            android:background="@drawable/bg_button_rounded"
+            android:layout_marginBottom="8dp" />
 
         <TextView
-            android:id="@+id/tvBackHome"
+            android:id="@+id/tvBackToLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Quay về Home"
+            android:text="Đã có tài khoản? Đăng nhập"
             android:textColor="#888888"
             android:textSize="14sp"
             android:layout_gravity="center_horizontal"
@@ -66,20 +106,7 @@
             android:layout_marginBottom="16dp" />
 
         <TextView
-            android:id="@+id/tvBackToRegister"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chưa có tài khoản? Đăng ký"
-            android:textColor="#888888"
-            android:textSize="14sp"
-            android:layout_gravity="center_horizontal"
-            android:padding="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:id="@+id/tvError"
+            android:id="@+id/tvErrorRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#D32F2F"

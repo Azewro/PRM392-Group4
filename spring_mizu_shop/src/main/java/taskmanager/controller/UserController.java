@@ -8,6 +8,11 @@ import taskmanager.dto.*;
 import taskmanager.service.UserService;
 import taskmanager.dto.LoginRequest;
 import taskmanager.dto.LoginResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import taskmanager.dto.RegistrationToken;
+import taskmanager.service.RegistrationService;
 
 import java.util.List;
 
@@ -17,6 +22,10 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    @Autowired
+    private RegistrationService registrationService;
+    @Autowired
+    private JavaMailSender mailSender;
 
     // 🔹 GET ALL USERS
     @GetMapping
@@ -68,6 +77,35 @@ public class UserController {
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
+    // 🔹 REGISTER (email verification)
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody CreateUserRequest request) {
+        // Kiểm tra trùng username/email
+        if (userService.getAllUsers().stream().anyMatch(u -> u.getUsername().equals(request.getUsername()) || u.getEmail().equals(request.getEmail()))) {
+            return ResponseEntity.badRequest().body("Username hoặc email đã tồn tại");
+        }
+        String token = registrationService.createRegistrationToken(request);
+        // Gửi email xác thực
+        String verifyLink = "http://localhost:8080/api/users/verify?token=" + token;
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(request.getEmail());
+        message.setSubject("Xác thực đăng ký tài khoản");
+        message.setText("Nhấn vào link sau để xác thực tài khoản: " + verifyLink);
+        mailSender.send(message);
+        return ResponseEntity.ok("Đã gửi email xác thực. Vui lòng kiểm tra email để hoàn tất đăng ký.");
+    }
+
+    // 🔹 VERIFY EMAIL
+    @GetMapping("/verify")
+    public ResponseEntity<String> verify(@RequestParam String token) {
+        boolean ok = registrationService.verifyTokenAndCreateUser(token);
+        if (ok) {
+            return ResponseEntity.ok("Xác thực thành công! Bạn có thể đăng nhập.");
+        } else {
+            return ResponseEntity.badRequest().body("Token không hợp lệ hoặc đã hết hạn, hoặc username/email đã tồn tại.");
         }
     }
 }

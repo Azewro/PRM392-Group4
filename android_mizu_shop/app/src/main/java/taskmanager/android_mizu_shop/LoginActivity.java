@@ -24,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etEmail, etPassword;
     private Button btnLogin;
     private TextView tvError;
+    private TextView tvBackToRegister;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         tvError = findViewById(R.id.tvError);
         TextView tvBackHome = findViewById(R.id.tvBackHome);
+        tvBackToRegister = findViewById(R.id.tvBackToRegister);
 
         etEmail.setHint("Username");
         etEmail.setInputType(android.text.InputType.TYPE_CLASS_TEXT);
@@ -49,6 +51,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        tvBackToRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
                 finish();
             }
