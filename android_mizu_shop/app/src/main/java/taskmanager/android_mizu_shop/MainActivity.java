@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,6 +30,20 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 intent = new Intent(MainActivity.this, PersonalInfoActivity.class);
             }
+            startActivity(intent);
+        });
+
+        // --- FAB ADMIN ---
+        FloatingActionButton fabAdmin = findViewById(R.id.fabAdmin);
+        SharedPreferences prefs = getSharedPreferences("auth", Context.MODE_PRIVATE);
+        String role = prefs.getString("role", null);
+        if ("admin".equals(role)) {
+            fabAdmin.setVisibility(View.VISIBLE);
+        } else {
+            fabAdmin.setVisibility(View.GONE);
+        }
+        fabAdmin.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, AdminManagementActivity.class);
             startActivity(intent);
         });
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

@@ -85,8 +85,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 btnLogin.setEnabled(true);
                 if (response.isSuccessful() && response.body() != null) {
-                    // Lưu token
-                    saveToken(response.body().getToken());
+                    // Lưu token và role
+                    saveTokenAndRole(response.body().getToken(), response.body().getUser() != null ? response.body().getUser().getRole() : null);
                     // Chuyển màn hình (ví dụ MainActivity)
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
@@ -106,8 +106,11 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void saveToken(String token) {
+    private void saveTokenAndRole(String token, String role) {
         SharedPreferences prefs = getSharedPreferences("auth", Context.MODE_PRIVATE);
-        prefs.edit().putString("token", token).apply();
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("token", token);
+        if (role != null) editor.putString("role", role);
+        editor.apply();
     }
 } 

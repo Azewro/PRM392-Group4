@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="#F8F9FB">
+
+    <!-- Search bar with back button -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="8dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="Back"
+            app:tint="#1976D2" />
+
+        <EditText
+            android:id="@+id/etSearchUser"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:hint="Search users..."
+            android:background="@drawable/bg_search_box"
+            android:drawableLeft="@android:drawable/ic_menu_search"
+            android:paddingLeft="36dp"
+            android:singleLine="true" />
+    </LinearLayout>
+
+    <!-- Filter tabs -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:scrollbars="none">
+        <LinearLayout
+            android:id="@+id/layoutFilterTabs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btnAllUsers"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="All Users"
+                android:background="@drawable/bg_tab_selected"
+                android:textColor="#1976D2"
+                android:layout_marginEnd="8dp" />
+            <Button
+                android:id="@+id/btnAdmins"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Admins"
+                android:background="@drawable/bg_tab_unselected"
+                android:textColor="#888"
+                android:layout_marginEnd="8dp" />
+            <Button
+                android:id="@+id/btnCustomers"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Customers"
+                android:background="@drawable/bg_tab_unselected"
+                android:textColor="#888"
+                android:layout_marginEnd="8dp" />
+            <Button
+                android:id="@+id/btnBlocked"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Blocked"
+                android:background="@drawable/bg_tab_unselected"
+                android:textColor="#888" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- User list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewUsers"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp" />
+
+</LinearLayout> 

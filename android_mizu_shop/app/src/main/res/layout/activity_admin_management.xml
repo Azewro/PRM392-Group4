@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F8F9FB">
+
+    <!-- AppBar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="#FFFFFF"
+        android:elevation="4dp">
+        <ImageButton
+            android:id="@+id/btnBackHome"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="Back to Home"
+            android:tint="#1976D2"
+            android:layout_marginStart="8dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Admin Management"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="#222"
+            android:layout_marginStart="12dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="24dp">
+
+        <Button
+            android:id="@+id/btn_manage_accounts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Quản lý tài khoản"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_button_rounded"
+            android:textColor="#1976D2"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_manage_products"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Quản lý sản phẩm"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_button_rounded_gray"
+            android:textColor="#333"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_manage_promotions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Quản lý khuyến mãi"
+            android:background="@drawable/bg_button_rounded_gray"
+            android:textColor="#333"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout> 
