@@ -7,6 +7,8 @@ import taskmanager.dto.ChangePasswordRequest;
 import taskmanager.dto.UpdateUserProfileRequest;
 import taskmanager.dto.UserDTO;
 import taskmanager.dto.CreateUserRequest;
+import taskmanager.dto.LoginRequest;
+import taskmanager.dto.LoginResponse;
 import taskmanager.mapper.UserMapper;
 import taskmanager.model.User;
 import taskmanager.repository.UserRepository;
@@ -98,4 +100,17 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    public LoginResponse login(LoginRequest request) {
+        User user = userRepository.findByUsername(request.getUsername());
+        if (user == null || !user.getIsActive()) {
+            throw new RuntimeException("Tài khoản không tồn tại hoặc đã bị khóa");
+        }
+        if (!user.getPassword().equals(request.getPassword())) {
+            throw new RuntimeException("Sai mật khẩu");
+        }
+        // Nếu có JWT thì sinh token, ở đây trả về chuỗi giả lập
+        String token = "dummy-token";
+        return new LoginResponse(token, userMapper.toDTO(user));
+    }
 }

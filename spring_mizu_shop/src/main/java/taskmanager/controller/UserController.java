@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import taskmanager.dto.*;
 import taskmanager.service.UserService;
+import taskmanager.dto.LoginRequest;
+import taskmanager.dto.LoginResponse;
 
 import java.util.List;
 
@@ -56,6 +58,17 @@ public class UserController {
     public ResponseEntity<Void> deactivateUser(@PathVariable Integer id) {
         userService.deactivateUser(id);
         return ResponseEntity.noContent().build(); // 204 No Content
+    }
+
+    // 🔹 LOGIN
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+        try {
+            LoginResponse response = userService.login(request);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 }
 
