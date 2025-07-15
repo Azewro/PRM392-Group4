@@ -77,6 +77,8 @@ public class UserServiceImpl implements UserService {
         user.setPhone(request.getPhone());
         user.setAddress(request.getAddress());
         user.setAvatar(request.getAvatar());
+        if (request.getRole() != null) user.setRole(request.getRole());
+        if (request.getIsActive() != null) user.setIsActive(request.getIsActive());
         user.setUpdatedAt(LocalDateTime.now());
 
         return userMapper.toDTO(userRepository.save(user));

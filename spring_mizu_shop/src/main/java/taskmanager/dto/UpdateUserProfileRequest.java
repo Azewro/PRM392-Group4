@@ -14,5 +14,7 @@ public class UpdateUserProfileRequest {
     private String phone;
     private String address;
     private String avatar;
+    private String role;
+    private Boolean isActive;
 }
 

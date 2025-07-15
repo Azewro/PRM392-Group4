@@ -17,5 +17,6 @@ public class UserDTO {
     private String address;
     private String avatar;
     private String role;
+    private Boolean isActive;
 }
 
