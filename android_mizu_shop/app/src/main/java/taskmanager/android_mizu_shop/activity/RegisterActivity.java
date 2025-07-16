@@ -1,4 +1,4 @@
-package taskmanager.android_mizu_shop;
+package taskmanager.android_mizu_shop.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,8 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import taskmanager.android_mizu_shop.R;
+import taskmanager.android_mizu_shop.api.ApiClient;
+import taskmanager.android_mizu_shop.api.ApiService;
 import taskmanager.android_mizu_shop.model.CreateUserRequest;
-import taskmanager.android_mizu_shop.model.User;
 import okhttp3.ResponseBody;
 
 public class RegisterActivity extends AppCompatActivity {

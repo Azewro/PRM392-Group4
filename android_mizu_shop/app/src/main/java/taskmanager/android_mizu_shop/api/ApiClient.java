@@ -1,4 +1,4 @@
-package taskmanager.android_mizu_shop;
+package taskmanager.android_mizu_shop.api;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

@@ -1,4 +1,4 @@
-package taskmanager.android_mizu_shop;
+package taskmanager.android_mizu_shop.activity;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +13,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import taskmanager.android_mizu_shop.R;
+import taskmanager.android_mizu_shop.User;
+import taskmanager.android_mizu_shop.adapter.UserAdapter;
+import taskmanager.android_mizu_shop.api.UserRepository;
+
 import java.util.ArrayList;
 import android.text.Editable;
 import android.text.TextWatcher;

@@ -1,10 +1,8 @@
-package taskmanager.android_mizu_shop;
+package taskmanager.android_mizu_shop.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +10,10 @@ import java.util.List;
 import androidx.fragment.app.FragmentActivity;
 import java.util.ArrayList;
 import android.widget.ImageView;
+
+import taskmanager.android_mizu_shop.R;
+import taskmanager.android_mizu_shop.User;
+import taskmanager.android_mizu_shop.activity.UserDetailBottomSheet;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
     private List<User> userList;

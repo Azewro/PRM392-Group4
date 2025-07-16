@@ -1,4 +1,4 @@
-package taskmanager.android_mizu_shop;
+package taskmanager.android_mizu_shop.activity;
 
 import android.os.Bundle;
 
@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import android.view.View;
+
+import taskmanager.android_mizu_shop.R;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package taskmanager.android_mizu_shop;
+package taskmanager.android_mizu_shop.activity;
 
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.Button;
+
+import taskmanager.android_mizu_shop.R;
 
 public class PersonalInfoActivity extends AppCompatActivity {
     @Override
