@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thông tin khuyến mãi"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp" />
+
+    <EditText
+        android:id="@+id/etPromotionTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tên khuyến mãi" />
+
+    <EditText
+        android:id="@+id/etPromotionDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Mô tả khuyến mãi"
+        android:layout_marginTop="8dp" />
+
+    <EditText
+        android:id="@+id/etPromotionDiscount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Phần trăm giảm giá (%)"
+        android:inputType="number"
+        android:layout_marginTop="8dp" />
+
+    <CheckBox
+        android:id="@+id/cbPromotionActive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Đang hoạt động"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/btnSavePromotion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lưu"
+        android:layout_marginTop="16dp" />
+</LinearLayout> 

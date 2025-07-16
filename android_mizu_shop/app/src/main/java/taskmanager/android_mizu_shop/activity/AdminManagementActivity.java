@@ -49,7 +49,8 @@ public class AdminManagementActivity extends AppCompatActivity {
             // TODO: Chuyển sang màn quản lý sản phẩm
         });
         btnPromotion.setOnClickListener(v -> {
-            // TODO: Chuyển sang màn quản lý khuyến mãi
+            Intent intent = new Intent(AdminManagementActivity.this, PromotionListActivity.class);
+            startActivity(intent);
         });
     }
 }

@@ -17,4 +17,9 @@ public interface ApiService {
     // Đăng ký (xác thực email)
     @POST("api/users/register")
     Call<ResponseBody> register(@Body CreateUserRequest request);
+
+    // Thêm hàm static để lấy PromotionRepository
+    static PromotionRepository getPromotionRepository() {
+        return ApiClient.getClient().create(PromotionRepository.class);
+    }
 } 
