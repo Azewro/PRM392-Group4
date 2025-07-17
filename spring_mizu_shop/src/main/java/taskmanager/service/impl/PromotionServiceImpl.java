@@ -43,15 +43,24 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     public PromotionDTO updatePromotion(Integer id, CreatePromotionRequest request) {
+        // 1. Tìm promotion theo id
         Promotion promo = promoRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy mã giảm giá"));
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy mã khuyến mãi!"));
 
+        // 2. Nếu code mới khác code cũ, kiểm tra trùng code
+        if (!promo.getCode().equals(request.getCode()) && promoRepo.existsByCodeAndIdNot(request.getCode(), id)) {
+            throw new RuntimeException("Mã khuyến mãi đã tồn tại!");
+        }
+
+        // 3. Cập nhật các trường
         promo.setCode(request.getCode());
         promo.setDiscountPercent(request.getDiscountPercent());
         promo.setStartDate(request.getStartDate());
         promo.setEndDate(request.getEndDate());
         promo.setMinOrderValue(request.getMinOrderValue());
+        // Không cập nhật isActive và createdAt ở đây
 
+        // 4. Lưu và trả về DTO
         return promoMapper.toDTO(promoRepo.save(promo));
     }
 

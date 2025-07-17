@@ -13,10 +13,12 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 public class PromotionDTO {
+    private Integer id;
     private String code;
     private Integer discountPercent;
     private LocalDate startDate;
     private LocalDate endDate;
     private BigDecimal minOrderValue;
+    private Boolean isActive;
 }
 

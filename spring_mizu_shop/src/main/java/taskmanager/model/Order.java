@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 @Table(name = "`Order`") // tránh conflict từ khóa SQL
 public class Order {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne
