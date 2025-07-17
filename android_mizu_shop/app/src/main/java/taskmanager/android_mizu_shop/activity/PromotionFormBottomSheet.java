@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,9 +22,12 @@ import taskmanager.android_mizu_shop.model.CreatePromotionRequest;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public class PromotionFormBottomSheet extends BottomSheetDialogFragment {
-    private EditText etTitle, etDescription, etDiscount;
+    private TextView tvId;
+    private EditText etCode, etDiscount, etStartDate, etEndDate, etMinOrderValue;
     private CheckBox cbActive;
     private Button btnSave;
     private Promotion promotion;
@@ -46,9 +50,13 @@ public class PromotionFormBottomSheet extends BottomSheetDialogFragment {
         BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
         View view = LayoutInflater.from(getContext()).inflate(R.layout.bottomsheet_promotion_form, null);
         dialog.setContentView(view);
-        etTitle = view.findViewById(R.id.etPromotionTitle);
-        etDescription = view.findViewById(R.id.etPromotionDescription);
+
+        tvId = view.findViewById(R.id.tvPromotionId);
+        etCode = view.findViewById(R.id.etPromotionCode);
         etDiscount = view.findViewById(R.id.etPromotionDiscount);
+        etStartDate = view.findViewById(R.id.etPromotionStartDate);
+        etEndDate = view.findViewById(R.id.etPromotionEndDate);
+        etMinOrderValue = view.findViewById(R.id.etPromotionMinOrderValue);
         cbActive = view.findViewById(R.id.cbPromotionActive);
         btnSave = view.findViewById(R.id.btnSavePromotion);
 
@@ -56,10 +64,15 @@ public class PromotionFormBottomSheet extends BottomSheetDialogFragment {
         token = getToken();
 
         if (promotion != null) {
-            etTitle.setText(promotion.getCode());
-            etDescription.setText(promotion.getStartDate()); // Hoặc endDate/minOrderValue nếu muốn
+            tvId.setText("ID: " + promotion.getId());
+            etCode.setText(promotion.getCode());
             etDiscount.setText(String.valueOf(promotion.getDiscountPercent()));
+            etStartDate.setText(promotion.getStartDate());
+            etEndDate.setText(promotion.getEndDate());
+            etMinOrderValue.setText(String.valueOf(promotion.getMinOrderValue()));
             cbActive.setChecked(promotion.getIsActive() != null && promotion.getIsActive());
+        } else {
+            tvId.setText("ID: (Tự động)");
         }
 
         btnSave.setOnClickListener(v -> savePromotion());
@@ -67,56 +80,50 @@ public class PromotionFormBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void savePromotion() {
-        String title = etTitle.getText().toString().trim();
-        String desc = etDescription.getText().toString().trim();
+        String code = etCode.getText().toString().trim();
         String discountStr = etDiscount.getText().toString().trim();
+        String startDate = etStartDate.getText().toString().trim();
+        String endDate = etEndDate.getText().toString().trim();
+        String minOrderValueStr = etMinOrderValue.getText().toString().trim();
         boolean active = cbActive.isChecked();
-        if (TextUtils.isEmpty(title) || TextUtils.isEmpty(desc) || TextUtils.isEmpty(discountStr)) {
+
+        if (TextUtils.isEmpty(code) || TextUtils.isEmpty(discountStr) || TextUtils.isEmpty(startDate)
+                || TextUtils.isEmpty(endDate) || TextUtils.isEmpty(minOrderValueStr)) {
             Toast.makeText(getContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             return;
         }
-        int discount = Integer.parseInt(discountStr);
-        // Lấy các trường cần thiết
-        String code = title;
-        Double discountPercent = Double.valueOf(discountStr);
-        String startDate = "2024-01-01"; // TODO: Cho nhập thực tế
-        String endDate = "2024-12-31"; // TODO: Cho nhập thực tế
-        Double minOrderValue = 0.0; // TODO: Cho nhập thực tế
-        CreatePromotionRequest request = new CreatePromotionRequest(code, discountPercent, startDate, endDate, minOrderValue);
-        if (promotion == null || promotion.getId() == null || promotion.getId() == 0) {
-            // Tạo mới
-            promotionRepository.createPromotion("Bearer " + token, request).enqueue(new Callback<Promotion>() {
-                @Override
-                public void onResponse(Call<Promotion> call, Response<Promotion> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        if (listener != null) listener.onPromotionSaved(response.body());
-                        dismiss();
-                    } else {
-                        Toast.makeText(getContext(), "Không thể tạo khuyến mãi", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                @Override
-                public void onFailure(Call<Promotion> call, Throwable t) {
-                    Toast.makeText(getContext(), "Lỗi kết nối server", Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else {
-            // Sửa
-            promotionRepository.updatePromotion("Bearer " + token, promotion.getId(), request).enqueue(new Callback<Promotion>() {
-                @Override
-                public void onResponse(Call<Promotion> call, Response<Promotion> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        if (listener != null) listener.onPromotionSaved(response.body());
-                        dismiss();
-                    } else {
-                        Toast.makeText(getContext(), "Không thể cập nhật khuyến mãi", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                @Override
-                public void onFailure(Call<Promotion> call, Throwable t) {
-                    Toast.makeText(getContext(), "Lỗi kết nối server", Toast.LENGTH_SHORT).show();
-                }
-            });
+
+        double discountPercent = Double.parseDouble(discountStr);
+        double minOrderValue = Double.parseDouble(minOrderValueStr);
+
+        CreatePromotionRequest request = new CreatePromotionRequest(
+                code, discountPercent, startDate, endDate, minOrderValue
+        );
+
+        if (promotion != null && promotion.getId() != null && promotion.getId() != 0) {
+            // UPDATE
+            promotionRepository.updatePromotion("Bearer " + token, promotion.getId(), request)
+                    .enqueue(new Callback<Promotion>() {
+                        @Override
+                        public void onResponse(Call<Promotion> call, Response<Promotion> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                if (listener != null) listener.onPromotionSaved(response.body());
+                                dismiss();
+                            } else {
+                                String errorMsg = "Không thể cập nhật khuyến mãi";
+                                try {
+                                    if (response.errorBody() != null) {
+                                        errorMsg = response.errorBody().string();
+                                    }
+                                } catch (Exception ignored) {}
+                                Toast.makeText(getContext(), errorMsg, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<Promotion> call, Throwable t) {
+                            Toast.makeText(getContext(), "Lỗi kết nối server", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
     }
 
