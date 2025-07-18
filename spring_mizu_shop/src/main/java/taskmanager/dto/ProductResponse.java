@@ -21,5 +21,7 @@ public class ProductResponse {
     private String volume;
     private Float averageRating;
     private String categoryName;
+    private Integer categoryId;
+    private Boolean isActive;
 }
 

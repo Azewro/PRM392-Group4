@@ -9,6 +9,8 @@ import taskmanager.dto.ProductResponse;
 import taskmanager.service.ProductService;
 
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.RequestPart;
 
 @RestController
 @RequestMapping("/api/products")
@@ -27,13 +29,30 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProductById(id));
     }
 
-    @PostMapping
-    public ResponseEntity<ProductResponse> createProduct(@RequestBody CreateProductRequest request) {
+    @PostMapping(consumes = {"multipart/form-data", "application/json"})
+    public ResponseEntity<ProductResponse> createProduct(
+            @RequestPart(value = "product", required = false) CreateProductRequest request,
+            @RequestPart(value = "imageUrl", required = false) MultipartFile imageFile,
+            @RequestBody(required = false) CreateProductRequest jsonRequest) throws Exception {
+        if (request == null && jsonRequest != null) request = jsonRequest;
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String base64 = java.util.Base64.getEncoder().encodeToString(imageFile.getBytes());
+            request.setImageUrl(base64);
+        }
         return new ResponseEntity<>(productService.createProduct(request), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ProductResponse> updateProduct(@PathVariable Integer id, @RequestBody CreateProductRequest request) {
+    @PutMapping(value = "/{id}", consumes = {"multipart/form-data", "application/json"})
+    public ResponseEntity<ProductResponse> updateProduct(
+            @PathVariable Integer id,
+            @RequestPart(value = "product", required = false) CreateProductRequest request,
+            @RequestPart(value = "imageUrl", required = false) MultipartFile imageFile,
+            @RequestBody(required = false) CreateProductRequest jsonRequest) throws Exception {
+        if (request == null && jsonRequest != null) request = jsonRequest;
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String base64 = java.util.Base64.getEncoder().encodeToString(imageFile.getBytes());
+            request.setImageUrl(base64);
+        }
         return ResponseEntity.ok(productService.updateProduct(id, request));
     }
 

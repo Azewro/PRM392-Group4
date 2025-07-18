@@ -40,16 +40,22 @@ public class AdminManagementActivity extends AppCompatActivity {
         Button btnAccount = findViewById(R.id.btn_manage_accounts);
         Button btnProduct = findViewById(R.id.btn_manage_products);
         Button btnPromotion = findViewById(R.id.btn_manage_promotions);
+        Button btnCategory = findViewById(R.id.btn_manage_categories);
 
         btnAccount.setOnClickListener(v -> {
             Intent intent = new Intent(AdminManagementActivity.this, UserListActivity.class);
             startActivity(intent);
         });
         btnProduct.setOnClickListener(v -> {
-            // TODO: Chuyển sang màn quản lý sản phẩm
+            Intent intent = new Intent(AdminManagementActivity.this, ProductListActivity.class);
+            startActivity(intent);
         });
         btnPromotion.setOnClickListener(v -> {
             Intent intent = new Intent(AdminManagementActivity.this, PromotionListActivity.class);
+            startActivity(intent);
+        });
+        btnCategory.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminManagementActivity.this, CategoryListActivity.class);
             startActivity(intent);
         });
     }

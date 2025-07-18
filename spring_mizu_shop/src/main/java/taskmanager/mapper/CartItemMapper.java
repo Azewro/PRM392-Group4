@@ -8,6 +8,7 @@ import taskmanager.model.CartItem;
 
 @Mapper(componentModel = "spring")
 public interface CartItemMapper {
+    @Mapping(source = "product.id", target = "productId")
     @Mapping(source = "product.name", target = "productName")
     @Mapping(source = "product.imageUrl", target = "imageUrl")
     @Mapping(source = "product.price", target = "price")

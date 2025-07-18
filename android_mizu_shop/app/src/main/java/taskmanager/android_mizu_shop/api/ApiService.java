@@ -22,4 +22,12 @@ public interface ApiService {
     static PromotionRepository getPromotionRepository() {
         return ApiClient.getClient().create(PromotionRepository.class);
     }
+
+    static CategoryRepository getCategoryRepository() {
+        return ApiClient.getClient().create(CategoryRepository.class);
+    }
+
+    static ProductRepository getProductRepository() {
+        return ApiClient.getClient().create(ProductRepository.class);
+    }
 } 

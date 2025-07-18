@@ -28,13 +28,17 @@
         android:id="@+id/etPromotionStartDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Ngày bắt đầu (yyyy-MM-dd)"/>
+        android:hint="Ngày bắt đầu (yyyy-MM-dd)"
+        android:focusable="false"
+        android:inputType="none"/>
 
     <EditText
         android:id="@+id/etPromotionEndDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Ngày kết thúc (yyyy-MM-dd)"/>
+        android:hint="Ngày kết thúc (yyyy-MM-dd)"
+        android:focusable="false"
+        android:inputType="none"/>
 
     <EditText
         android:id="@+id/etPromotionMinOrderValue"

@@ -20,6 +20,8 @@ public class Category {
 
     private String name;
     private String description;
+    @Lob
+    @Column(name = "image_url", columnDefinition = "MEDIUMTEXT")
     private String imageUrl;
     private Integer sortOrder;
     private Boolean isActive;

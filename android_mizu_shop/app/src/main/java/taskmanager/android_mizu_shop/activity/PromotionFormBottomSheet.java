@@ -24,6 +24,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import android.app.DatePickerDialog;
+import java.util.Calendar;
 
 public class PromotionFormBottomSheet extends BottomSheetDialogFragment {
     private TextView tvId;
@@ -76,6 +78,8 @@ public class PromotionFormBottomSheet extends BottomSheetDialogFragment {
         }
 
         btnSave.setOnClickListener(v -> savePromotion());
+        etStartDate.setOnClickListener(v -> showDatePickerDialog(etStartDate));
+        etEndDate.setOnClickListener(v -> showDatePickerDialog(etEndDate));
         return dialog;
     }
 
@@ -130,5 +134,17 @@ public class PromotionFormBottomSheet extends BottomSheetDialogFragment {
     private String getToken() {
         // TODO: Lấy token thực tế từ SharedPreferences
         return "";
+    }
+
+    private void showDatePickerDialog(final EditText editText) {
+        Calendar calendar = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (view, year, month, dayOfMonth) -> {
+            String selectedDate = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth);
+            editText.setText(selectedDate);
+        },
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.show();
     }
 } 
