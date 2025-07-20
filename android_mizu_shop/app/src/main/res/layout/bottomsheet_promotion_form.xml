@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:padding="16dp"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvPromotionId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ID: "
+        android:textStyle="bold"
+        android:paddingBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/etPromotionCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Mã khuyến mãi"/>
+
+    <EditText
+        android:id="@+id/etPromotionDiscount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Phần trăm giảm giá (%)"
+        android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/etPromotionStartDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Ngày bắt đầu (yyyy-MM-dd)"
+        android:focusable="false"
+        android:inputType="none"/>
+
+    <EditText
+        android:id="@+id/etPromotionEndDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Ngày kết thúc (yyyy-MM-dd)"
+        android:focusable="false"
+        android:inputType="none"/>
+
+    <EditText
+        android:id="@+id/etPromotionMinOrderValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Giá trị đơn tối thiểu"
+        android:inputType="numberDecimal"/>
+
+    <CheckBox
+        android:id="@+id/cbPromotionActive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Đang hoạt động"/>
+
+    <Button
+        android:id="@+id/btnSavePromotion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lưu"/>
+</LinearLayout> 

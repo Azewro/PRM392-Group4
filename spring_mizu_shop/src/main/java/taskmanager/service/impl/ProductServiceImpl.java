@@ -26,7 +26,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductResponse> getAllProducts() {
-        return productRepository.findByIsActiveTrue().stream()
+        return productRepository.findAll().stream()
                 .map(productMapper::toResponse)
                 .collect(Collectors.toList());
     }
@@ -49,6 +49,7 @@ public class ProductServiceImpl implements ProductService {
         product.setIsActive(true);
         product.setCreatedAt(LocalDateTime.now());
         product.setUpdatedAt(LocalDateTime.now());
+        product.setImageUrl(request.getImageUrl());
 
         return productMapper.toResponse(productRepository.save(product));
     }

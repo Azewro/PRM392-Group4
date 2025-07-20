@@ -14,18 +14,18 @@
         android:background="#FFFFFF"
         android:elevation="4dp">
         <ImageButton
-            android:id="@+id/btnBackHome"
+            android:id="@+id/btnBackProduct"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_arrow_back"
-            android:contentDescription="Back to Home"
+            android:contentDescription="Back"
             android:tint="#1976D2"
             android:layout_marginStart="8dp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Admin Management"
+            android:text="Quản lý sản phẩm"
             android:textStyle="bold"
             android:textSize="20sp"
             android:textColor="#222"
@@ -36,47 +36,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center"
-        android:padding="24dp">
+        android:padding="8dp">
 
-        <Button
-            android:id="@+id/btn_manage_accounts"
+        <EditText
+            android:id="@+id/etSearchProduct"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Quản lý tài khoản"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/bg_button_rounded"
-            android:textColor="#1976D2"
-            android:textStyle="bold" />
+            android:hint="Tìm kiếm sản phẩm..."
+            android:drawableStart="@android:drawable/ic_menu_search"
+            android:layout_marginBottom="8dp"/>
 
         <Button
-            android:id="@+id/btn_manage_products"
+            android:id="@+id/btnAddProduct"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Quản lý sản phẩm"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/bg_button_rounded_gray"
-            android:textColor="#333"
-            android:textStyle="bold" />
+            android:text="Thêm sản phẩm mới"
+            android:layout_marginBottom="8dp"/>
 
-        <Button
-            android:id="@+id/btn_manage_categories"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvProductList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Quản lý danh mục"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/bg_button_rounded_gray"
-            android:textColor="#333"
-            android:textStyle="bold" />
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
-        <Button
-            android:id="@+id/btn_manage_promotions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Quản lý khuyến mãi"
-            android:background="@drawable/bg_button_rounded_gray"
-            android:textColor="#333"
-            android:textStyle="bold" />
     </LinearLayout>
 
 </LinearLayout> 

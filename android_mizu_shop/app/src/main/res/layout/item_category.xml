@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    card_view:cardCornerRadius="8dp"
+    card_view:cardElevation="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <ImageView
+            android:id="@+id/ivCategoryImage"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:scaleType="centerCrop"
+            android:layout_alignParentStart="true"
+            android:contentDescription="Ảnh danh mục" />
+
+        <TextView
+            android:id="@+id/tvCategoryName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/ivCategoryImage"
+            android:layout_marginStart="12dp"
+            android:text="Tên danh mục"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvCategoryDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvCategoryName"
+            android:layout_toEndOf="@id/ivCategoryImage"
+            android:layout_marginStart="12dp"
+            android:text="Mô tả"
+            android:textSize="14sp"
+            android:textColor="#666" />
+
+        <TextView
+            android:id="@+id/tvCategoryProductCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvCategoryDescription"
+            android:layout_toEndOf="@id/ivCategoryImage"
+            android:layout_marginStart="12dp"
+            android:text="Sản phẩm: 0"
+            android:textSize="13sp"
+            android:textColor="#888" />
+
+        <TextView
+            android:id="@+id/tvCategoryActive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvCategoryProductCount"
+            android:layout_toEndOf="@id/ivCategoryImage"
+            android:layout_marginStart="12dp"
+            android:text="Đang hoạt động"
+            android:textSize="13sp"
+            android:textColor="#388E3C" />
+
+        <ImageView
+            android:id="@+id/btnEditCategory"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:src="@android:drawable/ic_menu_edit"
+            android:contentDescription="Sửa" />
+
+        <ImageView
+            android:id="@+id/btnDeleteCategory"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_below="@id/btnEditCategory"
+            android:layout_alignParentEnd="true"
+            android:src="@android:drawable/ic_menu_delete"
+            android:contentDescription="Xóa" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView> 

@@ -5,4 +5,5 @@ import taskmanager.model.Promotion;
 
 public interface PromotionRepository extends JpaRepository<Promotion, Integer> {
     Promotion findByCodeAndIsActiveTrue(String code);
+    boolean existsByCodeAndIdNot(String code, Integer id);
 }

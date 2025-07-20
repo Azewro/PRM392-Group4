@@ -22,7 +22,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryDTO> getAllCategories() {
         return categoryRepo.findAll().stream()
-                .filter(Category::getIsActive)
                 .map(categoryMapper::toDTO)
                 .toList();
     }
@@ -38,20 +37,25 @@ public class CategoryServiceImpl implements CategoryService {
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
-        return categoryMapper.toDTO(categoryRepo.save(category));
+        Category saved = categoryRepo.save(category);
+        return categoryMapper.toDTO(saved);
     }
 
     @Override
     public CategoryDTO updateCategory(Integer id, CreateCategoryRequest request) {
         Category category = categoryRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy danh mục"));
-
+        if (request.getImageUrl() != null && !request.getImageUrl().trim().isEmpty()) {
+            category.setImageUrl(request.getImageUrl());
+        }
+        if (request.getIsActive() != null) {
+            category.setIsActive(request.getIsActive());
+        }
         category.setName(request.getName());
         category.setDescription(request.getDescription());
-        category.setImageUrl(request.getImageUrl());
         category.setUpdatedAt(LocalDateTime.now());
-
-        return categoryMapper.toDTO(categoryRepo.save(category));
+        Category saved = categoryRepo.save(category);
+        return categoryMapper.toDTO(saved);
     }
 
     @Override

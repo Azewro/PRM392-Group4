@@ -31,6 +31,9 @@
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.AdminManagementActivity" />
         <activity android:name=".activity.UserListActivity" />
+        <activity android:name=".activity.PromotionListActivity" />
+        <activity android:name=".activity.CategoryListActivity" />
+        <activity android:name=".activity.ProductListActivity" />
 
 
     </application>

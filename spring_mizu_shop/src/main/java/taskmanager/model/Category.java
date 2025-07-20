@@ -15,10 +15,13 @@ import java.time.LocalDateTime;
 @Builder
 public class Category {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
     private String description;
+    @Lob
+    @Column(name = "image_url", columnDefinition = "MEDIUMTEXT")
     private String imageUrl;
     private Integer sortOrder;
     private Boolean isActive;

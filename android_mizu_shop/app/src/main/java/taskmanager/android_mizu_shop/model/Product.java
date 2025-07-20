@@ -12,10 +12,12 @@ public class Product {
     private String volume;
     private Float averageRating;
     private String categoryName;
+    private Integer categoryId;
+    private boolean isActive;
 
     public Product() {}
 
-    public Product(Integer id, String name, String description, BigDecimal price, String imageUrl, Integer stock, String volume, Float averageRating, String categoryName) {
+    public Product(Integer id, String name, String description, BigDecimal price, String imageUrl, Integer stock, String volume, Float averageRating, String categoryName, Integer categoryId, boolean isActive) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -25,6 +27,8 @@ public class Product {
         this.volume = volume;
         this.averageRating = averageRating;
         this.categoryName = categoryName;
+        this.categoryId = categoryId;
+        this.isActive = isActive;
     }
 
     // Getter & Setter
@@ -46,4 +50,8 @@ public class Product {
     public void setAverageRating(Float averageRating) { this.averageRating = averageRating; }
     public String getCategoryName() { return categoryName; }
     public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+    public Integer getCategoryId() { return categoryId; }
+    public void setCategoryId(Integer categoryId) { this.categoryId = categoryId; }
+    public boolean getIsActive() { return isActive; }
+    public void setIsActive(boolean isActive) { this.isActive = isActive; }
 } 
