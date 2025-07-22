@@ -117,7 +117,6 @@
                     android:textColor="@android:color/white"
                     android:background="@drawable/purple_circle" />
 
-
                 <TextView
                     android:id="@+id/tvSelectedQuantity"
                     android:layout_width="40dp"
@@ -136,7 +135,6 @@
                     android:background="@drawable/purple_circle"
                     app:tint="@android:color/white" />
 
-
                 <TextView
                     android:id="@+id/tvTotal"
                     android:layout_width="wrap_content"
@@ -146,6 +144,81 @@
                     android:textStyle="bold"
                     android:layout_marginStart="16dp"/>
             </LinearLayout>
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#DDDDDD"
+                android:layout_marginVertical="12dp"/>
+
+            <!-- Feedback Form -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gửi đánh giá của bạn"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginTop="12dp"/>
+
+            <EditText
+                android:id="@+id/edtFeedbackContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Viết đánh giá sản phẩm tại đây..."
+                android:inputType="textMultiLine"
+                android:minLines="2"
+                android:layout_marginTop="8dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="8dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Số sao: "
+                    android:textSize="15sp"/>
+                <RatingBar
+                    android:id="@+id/ratingBarFeedback"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:stepSize="1.0"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnSendFeedback"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gửi Phản Hồi"
+                android:layout_marginTop="8dp"
+                android:layout_gravity="end"/>
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#DDDDDD"
+                android:layout_marginVertical="12dp"/>
+
+            <!-- Feedback List -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Các đánh giá gần đây"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginTop="8dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvFeedbackList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"/>
         </LinearLayout>
     </ScrollView>
 

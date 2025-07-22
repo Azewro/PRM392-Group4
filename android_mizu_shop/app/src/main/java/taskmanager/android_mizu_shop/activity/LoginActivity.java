@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
                 login();
             }
         });
+
         tvBackHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
         });
+
         tvBackToRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,15 +84,17 @@ public class LoginActivity extends AppCompatActivity {
         LoginRequest request = new LoginRequest(username, password);
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
         Call<LoginResponse> call = apiService.login(request);
+
         btnLogin.setEnabled(false);
+
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 btnLogin.setEnabled(true);
+
                 if (response.isSuccessful() && response.body() != null) {
-                    // Lưu token và role
-                    saveTokenAndRole(response.body().getToken(), response.body().getUser() != null ? response.body().getUser().getRole() : null);
-                    // Chuyển màn hình (ví dụ MainActivity)
+                    saveUserInfo(response.body());
+
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
@@ -108,11 +113,16 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void saveTokenAndRole(String token, String role) {
+    private void saveUserInfo(LoginResponse response) {
         SharedPreferences prefs = getSharedPreferences("auth", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("token", token);
-        if (role != null) editor.putString("role", role);
+        editor.putString("token", response.getToken());
+
+        if (response.getUser() != null) {
+            editor.putString("role", response.getUser().getRole());
+            editor.putInt("user_id", response.getUser().getId());
+        }
+
         editor.apply();
     }
-} 
+}

@@ -84,4 +84,12 @@ public class ProductServiceImpl implements ProductService {
         product.setUpdatedAt(LocalDateTime.now());
         productRepository.save(product);
     }
+
+    @Override
+    public List<ProductResponse> getProductsByCategory(Integer categoryId) {
+        return productRepository.findByCategoryIdAndIsActiveTrue(categoryId)
+                .stream()
+                .map(productMapper::toResponse)
+                .collect(Collectors.toList());
+    }
 }
