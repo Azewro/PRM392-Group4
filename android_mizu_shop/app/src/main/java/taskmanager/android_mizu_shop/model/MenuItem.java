@@ -1,11 +1,12 @@
 package taskmanager.android_mizu_shop.model;
 
 public class MenuItem {
-    public int iconResId;
     public String name;
+    public int iconResId; // nếu dùng drawable sẵn
+    public String imageUrl; // nếu dùng ảnh từ API (base64 hoặc url)
 
-    public MenuItem(int iconResId, String name) {
-        this.iconResId = iconResId;
+    public MenuItem(String name, String imageUrl) {
         this.name = name;
+        this.imageUrl = imageUrl;
     }
 }

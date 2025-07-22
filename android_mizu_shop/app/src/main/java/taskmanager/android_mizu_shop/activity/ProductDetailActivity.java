@@ -1,6 +1,8 @@
 package taskmanager.android_mizu_shop.activity;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -9,9 +11,11 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 
@@ -54,7 +58,11 @@ public class ProductDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_detail_adokok);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
+// Nút back
+        toolbar.setNavigationOnClickListener(v -> finish());
         // Lấy dữ liệu từ Intent
         Product product = (Product) getIntent().getSerializableExtra("product");
 
@@ -160,6 +168,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 updateTotal();
             }
         });
+
     }
 
 
@@ -194,4 +203,29 @@ public class ProductDetailActivity extends AppCompatActivity {
                 .build();
         return retrofit.create(ApiService.class);
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.product_detail_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_share) {
+
+            Toast.makeText(this, "Chia sẻ sản phẩm", Toast.LENGTH_SHORT).show();
+            return true;
+
+        } else if (id == R.id.action_favorite) {
+
+            Toast.makeText(this, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+            return true;
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }

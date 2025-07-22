@@ -6,6 +6,7 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.*;
 import taskmanager.android_mizu_shop.model.Category;
+import taskmanager.android_mizu_shop.model.Product;
 
 public interface CategoryRepository {
     @GET("/api/categories")
@@ -17,6 +18,11 @@ public interface CategoryRepository {
         @Header("Authorization") String token,
         @Part("category") RequestBody categoryJson,
         @Part MultipartBody.Part imageUrl
+    );
+    @GET("/api/categories/{id}/products")
+    Call<List<Product>> getProductsByCategory(
+            @Header("Authorization") String token,
+            @Path("id") int categoryId
     );
 
     @Multipart
