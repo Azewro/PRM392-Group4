@@ -50,7 +50,7 @@ public class EditProfileActivity extends AppCompatActivity {
         // Lấy userId và token từ SharedPreferences
         SharedPreferences prefs = getSharedPreferences("auth", Context.MODE_PRIVATE);
         token = prefs.getString("token", "");
-        userId = prefs.getInt("userId", -1);
+        userId = prefs.getInt("user_id", -1);
 
         // Lấy thông tin user từ API để hiển thị lên form
         loadUserInfo();

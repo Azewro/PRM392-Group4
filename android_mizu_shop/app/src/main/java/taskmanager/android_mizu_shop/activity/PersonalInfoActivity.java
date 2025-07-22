@@ -73,7 +73,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
     private void loadUserInfoFromApi() {
         SharedPreferences prefs = getSharedPreferences("auth", MODE_PRIVATE);
         String token = prefs.getString("token", "");
-        int userId = prefs.getInt("userId", -1);
+        int userId = prefs.getInt("user_id", -1);
 
         UserRepository userRepo = ApiClient.getClient().create(UserRepository.class);
         Call<User> call = userRepo.getUserById(token, userId);

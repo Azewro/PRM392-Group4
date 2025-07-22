@@ -94,7 +94,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
             // 4. Gọi API đổi mật khẩu
             SharedPreferences prefs = getSharedPreferences("auth", Context.MODE_PRIVATE);
             String token = prefs.getString("token", "");
-            int userId = prefs.getInt("userId", -1);
+            int userId = prefs.getInt("user_id", -1);
 
             ChangePasswordRequest req = new ChangePasswordRequest(oldPass, newPass, confirmPass);
             UserRepository userRepo = ApiClient.getClient().create(UserRepository.class);
