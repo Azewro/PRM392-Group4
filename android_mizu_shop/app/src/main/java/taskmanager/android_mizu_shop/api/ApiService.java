@@ -2,12 +2,15 @@ package taskmanager.android_mizu_shop.api;
 
 import java.util.List;
 
-import retrofit2.http.*;
-import taskmanager.android_mizu_shop.model.CartItem;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
+import taskmanager.android_mizu_shop.model.CreateUserRequest;
 import taskmanager.android_mizu_shop.model.LoginRequest;
 import taskmanager.android_mizu_shop.model.LoginResponse;
-import taskmanager.android_mizu_shop.model.CreateUserRequest;
-import okhttp3.ResponseBody;
 import taskmanager.android_mizu_shop.model.Review;
 import taskmanager.android_mizu_shop.model.ReviewRequest;
 
