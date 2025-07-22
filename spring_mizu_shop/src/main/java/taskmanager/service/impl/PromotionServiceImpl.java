@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import taskmanager.dto.CreatePromotionRequest;
 import taskmanager.dto.PromotionDTO;
 import taskmanager.mapper.PromotionMapper;
+import taskmanager.mapper.impl.PromotionMapperImpl;
 import taskmanager.model.Promotion;
 import taskmanager.repository.PromotionRepository;
 import taskmanager.service.PromotionService;
@@ -14,8 +15,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class PromotionServiceImpl implements PromotionService {
+
+    public PromotionServiceImpl(PromotionRepository promoRepo) {
+        this.promoRepo = promoRepo;
+        this.promoMapper = new PromotionMapperImpl();
+    }
 
     private final PromotionRepository promoRepo;
     private final PromotionMapper promoMapper;
@@ -30,7 +35,7 @@ public class PromotionServiceImpl implements PromotionService {
             }
         });
 
-        return promoRepo.stream()
+        return promotions.stream()
                 .filter(Promotion::getIsActive)
                 .map(promoMapper::toDTO)
                 .collect(Collectors.toList());
