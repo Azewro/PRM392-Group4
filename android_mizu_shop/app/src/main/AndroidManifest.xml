@@ -34,7 +34,12 @@
         <activity android:name=".activity.PromotionListActivity" />
         <activity android:name=".activity.CategoryListActivity" />
         <activity android:name=".activity.ProductListActivity" />
+
+        <activity android:name=".activity.EditProfileActivity" />
+        <activity android:name=".activity.ChangePasswordActivity" />
+
         <activity android:name=".activity.ProductDetailActivity"/>
+
 
     </application>
 

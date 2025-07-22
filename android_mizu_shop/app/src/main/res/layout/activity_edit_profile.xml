@@ -11,7 +11,7 @@
         android:gravity="center_horizontal"
         android:padding="24dp">
 
-        <!-- Header: Back, Title, Edit -->
+        <!-- Header: Back, Title -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,17 +30,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Thông tin tài khoản"
+                android:text="Chỉnh sửa thông tin"
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:gravity="center" />
-
-            <ImageView
-                android:id="@+id/ivEdit"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/ic_edit"
-                android:contentDescription="Edit" />
         </LinearLayout>
 
         <!-- Avatar -->
@@ -49,7 +42,6 @@
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:src="@drawable/ic_avatar"
-            android:scaleType="centerCrop"
             android:layout_marginBottom="12dp" />
 
         <!-- Tên người dùng -->
@@ -73,9 +65,7 @@
             android:layout_marginBottom="32dp"
             android:layout_marginTop="8dp"
             android:layout_gravity="center"
-            android:clipToPadding="false"
-            android:backgroundTint="#F5F3FF"
-            android:radius="12dp">
+            android:clipToPadding="false">
 
             <TextView
                 android:id="@+id/tvEmail"
@@ -85,40 +75,59 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tvPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Số điện thoại: 0123456789"
-                android:layout_marginTop="8dp"
-                android:textStyle="bold" />
+                android:text="Số điện thoại"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp" />
+
+            <EditText
+                android:id="@+id/edtPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nhập số điện thoại"
+                android:inputType="phone"
+                android:background="@drawable/bg_edittext_rounded"
+                android:padding="10dp"
+                android:layout_marginTop="4dp"/>
 
             <TextView
-                android:id="@+id/tvAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Địa chỉ: Hà Nội"
-                android:layout_marginTop="8dp"
-                android:textStyle="bold" />
+                android:text="Địa chỉ"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp" />
+
+            <EditText
+                android:id="@+id/edtAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nhập địa chỉ"
+                android:background="@drawable/bg_edittext_rounded"
+                android:padding="10dp"
+                android:layout_marginTop="4dp"/>
         </LinearLayout>
 
-        <!-- Nút Đổi mật khẩu -->
+        <!-- Nút Lưu thay đổi -->
         <Button
-            android:id="@+id/btnChangePassword"
+            android:id="@+id/btnSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Đổi mật khẩu"
+            android:text="Lưu thay đổi"
             android:textColor="@android:color/white"
             android:backgroundTint="#7C3AED"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_button_rounded" />
 
-        <!-- Nút Đăng xuất -->
+        <!-- Nút Hủy -->
         <Button
-            android:id="@+id/btnLogout"
+            android:id="@+id/btnCancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Đăng xuất"
+            android:text="Hủy"
             android:textColor="@android:color/white"
-            android:backgroundTint="#EF4444" />
+            android:backgroundTint="#EF4444"
+            android:background="@drawable/bg_button_rounded_gray" />
 
     </LinearLayout>
-</ScrollView> 
+</ScrollView>
