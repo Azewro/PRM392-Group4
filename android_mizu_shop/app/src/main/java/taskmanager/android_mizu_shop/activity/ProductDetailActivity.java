@@ -2,18 +2,35 @@ package taskmanager.android_mizu_shop.activity;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import taskmanager.android_mizu_shop.R;
+import taskmanager.android_mizu_shop.adapter.ReviewAdapter;
+import taskmanager.android_mizu_shop.api.ApiService;
 import taskmanager.android_mizu_shop.model.Product;
+import taskmanager.android_mizu_shop.model.Review;
+import taskmanager.android_mizu_shop.model.ReviewRequest;
+import android.content.SharedPreferences;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
@@ -22,6 +39,13 @@ public class ProductDetailActivity extends AppCompatActivity {
     TextView btnMinus;
     ImageButton btnPlus;
     Button btnBuyNow;
+
+    private RecyclerView rvFeedbackList;
+    private ReviewAdapter reviewAdapter;
+    private List<Review> reviewList = new ArrayList<>();
+    private EditText edtFeedbackContent;
+    private RatingBar ratingBarFeedback;
+    private Button btnSendFeedback;
 
     int quantity = 1;
     double unitPrice = 0; // Giá từng sản phẩm (theo đơn vị VNĐ)
@@ -47,6 +71,15 @@ public class ProductDetailActivity extends AppCompatActivity {
         btnPlus = findViewById(R.id.btnPlus);
         btnBuyNow = findViewById(R.id.btnBuyNow);
 
+        rvFeedbackList = findViewById(R.id.rvFeedbackList);
+        reviewAdapter = new ReviewAdapter(reviewList);
+        rvFeedbackList.setAdapter(reviewAdapter);
+        rvFeedbackList.setLayoutManager(new LinearLayoutManager(this));
+
+        edtFeedbackContent = findViewById(R.id.edtFeedbackContent);
+        ratingBarFeedback = findViewById(R.id.ratingBarFeedback);
+        btnSendFeedback = findViewById(R.id.btnSendFeedback);
+
         // Hiển thị thông tin sản phẩm
         if (product != null) {
             tvProductName.setText(product.getName());
@@ -67,6 +100,49 @@ public class ProductDetailActivity extends AppCompatActivity {
         tvSelectedQuantity.setText(String.valueOf(quantity));
         updateTotal();
 
+        // Lấy danh sách feedback khi mở sản phẩm
+        if (product != null) {
+            loadFeedbackList(product.getId());
+        }
+
+        // Xử lý gửi feedback
+        btnSendFeedback.setOnClickListener(v -> {
+            String content = edtFeedbackContent.getText().toString().trim();
+            int rating = (int) ratingBarFeedback.getRating();
+            if (content.isEmpty() || rating == 0) {
+                Toast.makeText(this, "Vui lòng nhập nội dung và chọn số sao!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            // Lấy userId từ SharedPreferences
+            SharedPreferences prefs = getSharedPreferences("auth", MODE_PRIVATE);
+            int userId = prefs.getInt("user_id", -1);
+            if (userId == -1) {
+                Toast.makeText(this, "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            int productId = product != null ? product.getId() : 0;
+            ReviewRequest request = new ReviewRequest(userId, productId, rating, content);
+            getApiService().addReview(request).enqueue(new Callback<Review>() {
+                @Override
+                public void onResponse(Call<Review> call, Response<Review> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        reviewList.add(0, response.body());
+                        reviewAdapter.notifyItemInserted(0);
+                        rvFeedbackList.scrollToPosition(0);
+                        edtFeedbackContent.setText("");
+                        ratingBarFeedback.setRating(0);
+                        Toast.makeText(ProductDetailActivity.this, "Gửi phản hồi thành công!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ProductDetailActivity.this, "Lỗi gửi phản hồi! Mã lỗi: " + response.code(), Toast.LENGTH_LONG).show();
+                    }
+                }
+                @Override
+                public void onFailure(Call<Review> call, Throwable t) {
+                    Toast.makeText(ProductDetailActivity.this, "Gửi phản hồi thất bại! " + t.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+        });
+
         // Nút cộng
         btnPlus.setOnClickListener(v -> {
             if (product != null && quantity < product.getStock()) {
@@ -86,10 +162,36 @@ public class ProductDetailActivity extends AppCompatActivity {
         });
     }
 
+
     private void updateTotal() {
         double total = quantity * unitPrice;
         String formatted = String.format("  Tổng: %.2fđ", total);
         tvTotal.setText(formatted);
         tvTotal2.setText(formatted);
+    }
+
+    private void loadFeedbackList(int productId) {
+        getApiService().getReviewsByProduct(productId).enqueue(new Callback<List<Review>>() {
+            @Override
+            public void onResponse(Call<List<Review>> call, Response<List<Review>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    reviewList.clear();
+                    reviewList.addAll(response.body());
+                    reviewAdapter.notifyDataSetChanged();
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Review>> call, Throwable t) {
+                // Có thể hiển thị Toast hoặc log lỗi
+            }
+        });
+    }
+
+    private ApiService getApiService() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:8080/api/") // Sửa lại baseUrl nếu cần
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        return retrofit.create(ApiService.class);
     }
 }

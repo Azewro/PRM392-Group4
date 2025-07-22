@@ -1,12 +1,18 @@
 package taskmanager.android_mizu_shop.api;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import taskmanager.android_mizu_shop.model.LoginRequest;
 import taskmanager.android_mizu_shop.model.LoginResponse;
 import taskmanager.android_mizu_shop.model.CreateUserRequest;
 import okhttp3.ResponseBody;
+import taskmanager.android_mizu_shop.model.Review;
+import taskmanager.android_mizu_shop.model.ReviewRequest;
 
 // Chỉ tạo mẫu, sẽ bổ sung chi tiết sau
 public interface ApiService {
@@ -30,4 +36,10 @@ public interface ApiService {
     static ProductRepository getProductRepository() {
         return ApiClient.getClient().create(ProductRepository.class);
     }
+
+    @GET("reviews/product/{productId}")
+    Call<List<Review>> getReviewsByProduct(@Path("productId") int productId);
+
+    @POST("reviews")
+    Call<Review> addReview(@Body ReviewRequest reviewRequest);
 } 
