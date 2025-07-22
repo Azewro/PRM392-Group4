@@ -24,35 +24,41 @@
             android:padding="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <!-- Vị trí -->
-            <TextView
-                android:id="@+id/tvLocation"
-                android:text="Thạch Hòa, Thạch Thất, Hà Nội"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
             <!-- Tìm kiếm -->
-            <EditText
-                android:id="@+id/etSearch"
-                android:layout_width="376dp"
-                android:layout_height="60dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-                android:hint="Tìm kiếm..." />
+                <EditText
+                    android:id="@+id/etSearch"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="60dp"
+                    android:hint="Tìm kiếm..." />
 
+                <ImageButton
+                    android:id="@+id/btnSearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:background="@android:color/transparent"
+                    android:src="@android:drawable/ic_menu_search"
+                    android:contentDescription="Search" />
+            </LinearLayout>
             <!-- Banner -->
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/bannerViewPager"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="147dp"
                 android:layout_marginTop="12dp" />
 
             <!-- Menu chức năng -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvMenu"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp" />
+                android:layout_height="158dp"
+                android:layout_marginTop="12dp"
+                android:text="Danh mục" />
 
             <!-- Danh sách món -->
             <TextView

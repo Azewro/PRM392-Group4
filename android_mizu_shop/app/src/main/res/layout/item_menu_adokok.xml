@@ -7,16 +7,17 @@
     android:padding="8dp">
 
     <ImageView
-        android:id="@+id/imgMenu"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@mipmap/food" />
+        android:id="@+id/imgCate"
+        android:layout_width="51dp"
+        android:layout_height="40dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_launcher" />
 
     <TextView
-        android:id="@+id/tvMenuName"
+        android:id="@+id/tvCategoryName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Đồ ăn"
+        android:text="Category"
         android:textSize="14sp"
         android:layout_marginTop="4dp"/>
 </LinearLayout>

@@ -2,6 +2,7 @@ package taskmanager.android_mizu_shop.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,60 +12,69 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import taskmanager.android_mizu_shop.R;
+import taskmanager.android_mizu_shop.activity.ProductByCategoryActivity;
 import taskmanager.android_mizu_shop.activity.ProductDetailActivity;
+import taskmanager.android_mizu_shop.model.Category;
 import taskmanager.android_mizu_shop.model.MenuItem;
 
-public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder> {
-    private List<MenuItem> menuList;
+public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CategoryViewHolder> {
 
-    public MenuAdapter(List<MenuItem> menuList) {
-        this.menuList = menuList;
+    private List<Category> categoryList;
+    private Context context;
+
+    public MenuAdapter(Context context, List<Category> categoryList) {
+        this.context = context;
+        this.categoryList = categoryList;
     }
 
     @NonNull
     @Override
-    public MenuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_menu_adokok, parent, false);
-        return new MenuViewHolder(view);
+    public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_menu_adokok, parent, false);
+        return new CategoryViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MenuViewHolder holder, int position) {
-        MenuItem item = menuList.get(position);
-        holder.tvName.setText(item.name);
-        holder.imgIcon.setImageResource(item.iconResId);
+    public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
+        Category category = categoryList.get(position);
+        holder.tvCategoryName.setText(category.getName());
 
+        if (holder.imgCategory != null && category.getImageUrl() != null && !category.getImageUrl().isEmpty()) {
+            Glide.with(context)
+                    .load(category.getImageUrl())
+                    .placeholder(R.drawable.ban1)
+                    .into(holder.imgCategory);
+        } else {
+            holder.imgCategory.setImageResource(R.drawable.ic_launcher_background);
+        }
+        Log.d("MenuAdapter", "imgCategory is null? " + (holder.imgCategory == null));
         holder.itemView.setOnClickListener(v -> {
-            // Tạo intent mở ProductDetailActivity
-            Context context = v.getContext();
-            Intent intent = new Intent(context, ProductDetailActivity.class);
-            intent.putExtra("img", item.iconResId);
-            intent.putExtra("name", item.name);
-            intent.putExtra("price", "25.000đ"); // Fix cứng nếu chưa có giá
-            intent.putExtra("desc", "Mô tả sản phẩm mẫu..."); // Fix cứng nếu chưa có desc
+            Intent intent = new Intent(context, ProductByCategoryActivity.class);
+            intent.putExtra("categoryId", category.getId());
             context.startActivity(intent);
         });
-    }
 
+
+    }
 
     @Override
     public int getItemCount() {
-        return menuList.size();
+        return categoryList.size();
     }
 
-    public static class MenuViewHolder extends RecyclerView.ViewHolder {
-        ImageView imgIcon;
-        TextView tvName;
+    public static class CategoryViewHolder extends RecyclerView.ViewHolder {
+        ImageView imgCategory;
+        TextView tvCategoryName;
 
-        public MenuViewHolder(@NonNull View itemView) {
+        public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
-            imgIcon = itemView.findViewById(R.id.imgMenu);
-            tvName = itemView.findViewById(R.id.tvMenuName);
+            imgCategory = itemView.findViewById(R.id.imgCate);
+            tvCategoryName = itemView.findViewById(R.id.tvCategoryName);
         }
     }
 }
-
