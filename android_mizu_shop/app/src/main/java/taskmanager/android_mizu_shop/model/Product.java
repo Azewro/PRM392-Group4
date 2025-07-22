@@ -1,8 +1,9 @@
 package taskmanager.android_mizu_shop.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class Product {
+public class Product implements Serializable {
     private Integer id;
     private String name;
     private String description;
