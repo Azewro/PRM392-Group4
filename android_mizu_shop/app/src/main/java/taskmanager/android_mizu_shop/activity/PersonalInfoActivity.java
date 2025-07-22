@@ -60,7 +60,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
         Button btnLogout = findViewById(R.id.btnLogout);
         btnLogout.setOnClickListener(v -> {
             SharedPreferences prefs = getSharedPreferences("auth", Context.MODE_PRIVATE);
-            prefs.edit().remove("token").remove("role").apply();
+            prefs.edit().remove("token").remove("role").remove("user_id").apply();
 
             Intent intent = new Intent(PersonalInfoActivity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
