@@ -5,7 +5,7 @@ import org.mapstruct.Mapper;
 import taskmanager.dto.PromotionDTO;
 import taskmanager.model.Promotion;
 
-@Mapper(componentModel = "spring")
+//@Mapper(componentModel = "spring")
 public interface PromotionMapper {
     PromotionDTO toDTO(Promotion promotion);
 }

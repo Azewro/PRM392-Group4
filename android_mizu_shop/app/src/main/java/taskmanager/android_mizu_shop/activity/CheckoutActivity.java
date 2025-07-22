@@ -35,7 +35,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private List<CartItem> cartItemList = new ArrayList<>();
     private TextView textViewTotal;
     private Button buttonCheckout, buttonApplyCoupon;
-    private Spinner spinnerCoupons;
+    private AutoCompleteTextView spinnerCoupons;
     private List<Promotion> promotionList = new ArrayList<>();
     private ArrayAdapter<String> couponAdapter;
     private PromotionRepository promotionRepository;
@@ -71,7 +71,7 @@ public class CheckoutActivity extends AppCompatActivity {
         loadPromotions();
 
         buttonApplyCoupon.setOnClickListener(v -> {
-            String code = spinnerCoupons.getSelectedItem().toString();
+            String code = spinnerCoupons.toString().trim();
             applyCoupon(code);
         });
 
@@ -106,13 +106,18 @@ public class CheckoutActivity extends AppCompatActivity {
 
                     // Set up the adapter for the Spinner to display the codes
                     couponAdapter = new ArrayAdapter<>(CheckoutActivity.this,
-                            android.R.layout.simple_spinner_item, codes);
-                    couponAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spinnerCoupons.setAdapter(couponAdapter);  // Set the adapter to the Spinner
+                            android.R.layout.simple_dropdown_item_1line, codes); // CHANGE layout for AutoCompleteTextView
+                    spinnerCoupons.setAdapter(couponAdapter);
+
+                    // ✅ Force dropdown to show every time it's clicked
+                    spinnerCoupons.setOnClickListener(v -> {
+                        spinnerCoupons.showDropDown();
+                    });
                 } else {
                     Toast.makeText(CheckoutActivity.this, "Không lấy được mã giảm giá!", Toast.LENGTH_SHORT).show();
                 }
             }
+
 
             @Override
             public void onFailure(Call<List<Promotion>> call, Throwable t) {

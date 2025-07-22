@@ -52,16 +52,16 @@
         app:layout_constraintBottom_toTopOf="@id/layoutBottomBar">
 
         <!-- Spinner for coupon selection -->
-        <Spinner
+        <AutoCompleteTextView
             android:id="@+id/spinnerCoupons"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:background="@drawable/rounded_edittext"
-            android:spinnerMode="dropdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="Chọn mã giảm giá"
-            android:paddingHorizontal="12dp"
-            android:textSize="15sp"/>
+            android:inputType="none"
+            android:background="@drawable/rounded_edittext"
+            android:padding="12dp"
+            android:textSize="15sp"
+            android:dropDownHeight="200dp" />
 
         <Button
             android:id="@+id/buttonApplyCoupon"
