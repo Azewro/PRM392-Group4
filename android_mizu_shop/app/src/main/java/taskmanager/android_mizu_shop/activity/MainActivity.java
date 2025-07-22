@@ -17,7 +17,7 @@ import taskmanager.android_mizu_shop.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FloatingActionButton fabAdmin;
+    private FloatingActionButton fabAdmin, fabCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +39,13 @@ public class MainActivity extends AppCompatActivity {
 
         fabAdmin = findViewById(R.id.fabAdmin);
         updateFabAdminVisibility();
+
+        fabCart = findViewById(R.id.fabCart);
+        fabCart.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, CartActivity.class);
+            startActivity(intent);
+        });
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
