@@ -11,6 +11,7 @@ import taskmanager.service.PromotionService;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,10 +22,18 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     public List<PromotionDTO> getAllPromotions() {
-        return promoRepo.findAll().stream()
+        List<Promotion> promotions = promoRepo.findAll();
+
+        promotions.forEach(promo -> {
+            if (promo.getIsActive() == null) {
+                promo.setIsActive(false);
+            }
+        });
+
+        return promoRepo.stream()
                 .filter(Promotion::getIsActive)
                 .map(promoMapper::toDTO)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override

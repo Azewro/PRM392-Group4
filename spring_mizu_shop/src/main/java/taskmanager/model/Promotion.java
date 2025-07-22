@@ -28,5 +28,6 @@ public class Promotion {
     private BigDecimal minOrderValue;
     private Boolean isActive;
     private LocalDateTime createdAt;
+
 }
 
