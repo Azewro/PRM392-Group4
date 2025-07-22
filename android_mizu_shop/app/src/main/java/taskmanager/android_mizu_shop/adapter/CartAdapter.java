@@ -20,15 +20,17 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
     private List<CartItem> cartItemList;
     private OnQuantityChangeListener listener;
+    private boolean showButtons = true;
 
     public interface OnQuantityChangeListener {
         void onIncrease(CartItem item);
         void onDecrease(CartItem item);
     }
 
-    public CartAdapter(List<CartItem> cartItemList, OnQuantityChangeListener listener) {
+    public CartAdapter(List<CartItem> cartItemList, OnQuantityChangeListener listener, boolean showButtons) {
         this.cartItemList = cartItemList;
         this.listener = listener;
+        this.showButtons = showButtons;
     }
 
     @NonNull
