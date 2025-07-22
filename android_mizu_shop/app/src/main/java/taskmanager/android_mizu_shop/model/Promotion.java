@@ -11,6 +11,12 @@ public class Promotion {
 
     public Promotion() {}
 
+    public Promotion(String code, Double discountPercent, Boolean isActive) {
+        this.code = code;
+        this.discountPercent = discountPercent;
+        this.isActive = isActive;
+    }
+
     public Promotion(Integer id, String code, Double discountPercent, String startDate, String endDate, Double minOrderValue, Boolean isActive) {
         this.id = id;
         this.code = code;
