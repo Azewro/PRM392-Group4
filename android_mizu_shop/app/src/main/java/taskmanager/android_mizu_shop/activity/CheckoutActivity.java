@@ -118,6 +118,7 @@ public class CheckoutActivity extends AppCompatActivity {
                 }
             }
 
+
             @Override
             public void onFailure(Call<List<Promotion>> call, Throwable t) {
                 Toast.makeText(CheckoutActivity.this, "Lỗi kết nối server", Toast.LENGTH_SHORT).show();
