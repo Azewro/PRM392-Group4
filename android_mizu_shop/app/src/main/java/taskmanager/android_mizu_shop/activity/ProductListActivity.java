@@ -161,6 +161,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
                 .show();
     }
 
+
     public void onProductToggleActive(Product product) {
         boolean newActive = !product.getIsActive();
         if (!newActive) {
