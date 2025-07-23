@@ -71,6 +71,10 @@ public class ProductServiceImpl implements ProductService {
         product.setTags(request.getTags());
         product.setStock(request.getStock());
         product.setCategory(category);
+        // Bổ sung cập nhật trạng thái isActive nếu request có
+        if (request.getIsActive() != null) {
+            product.setIsActive(request.getIsActive());
+        }
         product.setUpdatedAt(LocalDateTime.now());
 
         return productMapper.toResponse(productRepository.save(product));

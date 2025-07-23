@@ -13,6 +13,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import taskmanager.dto.RegistrationToken;
 import taskmanager.service.RegistrationService;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class UserController {
 
     // 🔹 CREATE NEW USER
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody CreateUserRequest request) {
+    public ResponseEntity<UserDTO> createUser(@RequestBody @Valid CreateUserRequest request) {
         UserDTO createdUser = userService.createUser(request);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED); // 201 Created
     }
@@ -82,7 +83,7 @@ public class UserController {
 
     // 🔹 REGISTER (email verification)
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody CreateUserRequest request) {
+    public ResponseEntity<String> register(@RequestBody @Valid CreateUserRequest request) {
         // Kiểm tra trùng username/email
         if (userService.getAllUsers().stream().anyMatch(u -> u.getUsername().equals(request.getUsername()) || u.getEmail().equals(request.getEmail()))) {
             return ResponseEntity.badRequest().body("Username hoặc email đã tồn tại");

@@ -21,5 +21,6 @@ public class CreateProductRequest {
     private String ingredients;
     private String tags;
     private Integer categoryId;
+    private Boolean isActive;
 }
 
