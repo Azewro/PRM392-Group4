@@ -94,7 +94,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         if (product != null) {
             tvProductName.setText(product.getName());
-            tvPrice.setText(product.getPrice() + " USD");
+            tvPrice.setText(product.getPrice() + " VND");
             tvStockStatus.setText("Tình trạng: " + (product.getIsActive() ? "Còn hàng" : "Hết hàng"));
             tvQuantity.setText("Số lượng còn: " + product.getStock());
 

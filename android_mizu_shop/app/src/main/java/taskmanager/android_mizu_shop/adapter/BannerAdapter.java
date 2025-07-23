@@ -13,7 +13,7 @@ import java.util.List;
 import taskmanager.android_mizu_shop.R;
 
 public class BannerAdapter extends RecyclerView.Adapter<BannerAdapter.BannerViewHolder> {
-    List<Integer> bannerImages; // drawable id
+    private List<Integer> bannerImages;
 
     public BannerAdapter(List<Integer> bannerImages) {
         this.bannerImages = bannerImages;
@@ -25,7 +25,6 @@ public class BannerAdapter extends RecyclerView.Adapter<BannerAdapter.BannerView
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.image_banner_adokok, parent, false);
         return new BannerViewHolder(view);
     }
-
 
     @Override
     public void onBindViewHolder(@NonNull BannerViewHolder holder, int position) {

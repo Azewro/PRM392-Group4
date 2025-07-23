@@ -16,6 +16,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -23,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -45,6 +48,16 @@ import taskmanager.android_mizu_shop.model.Product;
 public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton fabAdmin, fabCart;
+
+    private ViewPager2 viewPager;
+    private BannerAdapter bannerAdapter;
+    private List<Integer> bannerImages = Arrays.asList(
+            R.drawable.ban2,
+            R.drawable.ban1,
+            R.drawable.ban3
+    );
+    private Handler sliderHandler = new Handler();
+    private Runnable sliderRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,19 +103,33 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        ViewPager2 bannerViewPager = findViewById(R.id.bannerViewPager);
+        ViewPager2 bannerViewPager = findViewById(R.id.viewPagerBanner);
+
+
+        viewPager = findViewById(R.id.viewPagerBanner);
+        bannerAdapter = new BannerAdapter(bannerImages);
+        viewPager.setAdapter(bannerAdapter);
+
+        // Auto-scroll logic
+        sliderRunnable = () -> {
+            int nextPos = viewPager.getCurrentItem() + 1;
+            if (nextPos >= bannerAdapter.getItemCount()) nextPos = 0;
+            viewPager.setCurrentItem(nextPos, true);
+        };
+
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                sliderHandler.removeCallbacks(sliderRunnable);
+                sliderHandler.postDelayed(sliderRunnable, 3000); // 3 giây tự động trượt
+            }
+        });
 
 
 
 
-
-        List<Integer> bannerImages = new ArrayList<>();
-        bannerImages.add(R.drawable.ban1);
-        bannerImages.add(R.drawable.banner1);
-        bannerImages.add(R.drawable.banner1);
-
-        BannerAdapter bannerAdapter = new BannerAdapter(bannerImages);
-        bannerViewPager.setAdapter(bannerAdapter);
+//        BannerAdapter bannerAdapter = new BannerAdapter(bannerImages);
+//        bannerViewPager.setAdapter(bannerAdapter);
 
 
         RecyclerView rvMenu = findViewById(R.id.rvMenu);

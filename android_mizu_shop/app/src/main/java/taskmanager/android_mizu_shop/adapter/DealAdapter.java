@@ -51,7 +51,9 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
     public void onBindViewHolder(@NonNull DealViewHolder holder, int position) {
         Product product = productList.get(position);
         holder.tvName.setText(product.getName());
-        holder.tvPrice.setText((double) product.getPrice().doubleValue() + " USD");
+        holder.tvPrice.setText((double) product.getPrice().doubleValue() + " VND");
+        holder.tvStockStatus.setText("Tình trạng: " + (product.getIsActive() ? "Còn hàng" : "Hết hàng"));
+        holder.tvQuantity.setText("Số lượng còn: " + product.getStock());
 
 
         if (product.getImageUrl() != null && !product.getImageUrl().isEmpty()) {
@@ -83,7 +85,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
     }
 
     static class DealViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvPrice;
+        TextView tvName, tvPrice,tvStockStatus, tvQuantity;
         ImageView imgProduct;
 
         DealViewHolder(@NonNull View itemView) {
@@ -91,6 +93,8 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
             tvName = itemView.findViewById(R.id.tvFoodName);
             tvPrice = itemView.findViewById(R.id.tvPrice);
             imgProduct = itemView.findViewById(R.id.imgFood);
+            tvStockStatus = itemView.findViewById(R.id.tvStock);
+            tvQuantity = itemView.findViewById(R.id.tvQuantity);
         }
     }
 }

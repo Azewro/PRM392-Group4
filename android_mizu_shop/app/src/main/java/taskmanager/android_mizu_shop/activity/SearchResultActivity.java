@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,7 +26,6 @@ import taskmanager.android_mizu_shop.api.ApiService;
 import taskmanager.android_mizu_shop.api.ProductRepository;
 import taskmanager.android_mizu_shop.model.Product;
 //import taskmanager.android_mizu_shop.retrofit.RetrofitClient;
-
 public class SearchResultActivity extends AppCompatActivity {
 
     private RecyclerView rvResults;
@@ -34,33 +34,32 @@ public class SearchResultActivity extends AppCompatActivity {
     private EditText edtSearch;
     private ImageView btnSearch;
 
-
-
-    private ProductRepository productRepository;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result_adokok);
 
-        // Khởi tạo Retrofit repository
-//        productRepository = ApiService.getProductRepository().searchProductsByName(token,keyword);
+        //toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        // Khởi tạo view
+
+        toolbar.setNavigationOnClickListener(v -> finish());
+
+
         rvResults = findViewById(R.id.rvSearchResults);
         edtSearch = findViewById(R.id.edtSearch);
         btnSearch = findViewById(R.id.btnSearch);
 
         rvResults.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new SearchAdapter(productList, product -> {
-            // Xử lý khi click vào 1 sản phẩm
+        adapter = new SearchAdapter(this, productList, product -> {
             Intent intent = new Intent(SearchResultActivity.this, ProductDetailActivity.class);
             intent.putExtra("productId", product.getId());
             startActivity(intent);
         });
+
         rvResults.setAdapter(adapter);
 
-        // Lấy từ khóa tìm kiếm từ intent
         String keyword = getIntent().getStringExtra("keyword");
         if (keyword != null) {
             edtSearch.setText(keyword);
@@ -79,26 +78,31 @@ public class SearchResultActivity extends AppCompatActivity {
 
     private void searchProduct(String keyword) {
         SharedPreferences prefs = getSharedPreferences("auth", Context.MODE_PRIVATE);
-        String token = prefs.getString("token", null);
-        if (token == null) token = ""; //if null
+        String token = prefs.getString("token", "");
+        if (!token.startsWith("Bearer ")) {
+            token = "Bearer " + token;
+        }
+
         ApiService.getProductRepository()
-                .searchProductsByName("Bearer " + token, keyword)
+                .searchProductsByName(token, keyword)
                 .enqueue(new Callback<List<Product>>() {
                     @Override
-            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    productList.clear();
-                    productList.addAll(response.body());
-                    adapter.notifyDataSetChanged();
-                } else if(response.body() == null){
-                    Toast.makeText(SearchResultActivity.this, "Không tìm thấy sản phẩm", Toast.LENGTH_SHORT).show();
-                }
-            }
+                    public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+                        if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
+                            productList.clear();
+                            productList.addAll(response.body());
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            productList.clear();
+                            adapter.notifyDataSetChanged();
+                            Toast.makeText(SearchResultActivity.this, "Không tìm thấy sản phẩm", Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
-            @Override
-            public void onFailure(Call<List<Product>> call, Throwable t) {
-                Toast.makeText(SearchResultActivity.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                    @Override
+                    public void onFailure(Call<List<Product>> call, Throwable t) {
+                        Toast.makeText(SearchResultActivity.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
