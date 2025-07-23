@@ -14,7 +14,7 @@ import retrofit2.http.Query;
 import taskmanager.android_mizu_shop.model.CartItem;
 
 public interface CartRepository {
-    @GET("/api/cart")
+    @GET("/api/cart/{userId}")
     Call<List<CartItem>> getCartItems(@Query("userId") int userId);
 
     @POST("/api/cart")

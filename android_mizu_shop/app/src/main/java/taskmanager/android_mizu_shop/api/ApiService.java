@@ -41,6 +41,11 @@ public interface ApiService {
         return ApiClient.getClient().create(ProductRepository.class);
     }
 
+    // Thêm hàm static để lấy OrderRepository
+    static OrderRepository getOrderRepository() {
+        return ApiClient.getClient().create(OrderRepository.class);
+    }
+
     @GET("reviews/product/{productId}")
     Call<List<Review>> getReviewsByProduct(@Path("productId") int productId);
 
