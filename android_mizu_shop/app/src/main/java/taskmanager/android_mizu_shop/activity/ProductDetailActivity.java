@@ -1,6 +1,9 @@
 package taskmanager.android_mizu_shop.activity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -61,9 +64,9 @@ public class ProductDetailActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-// Nút back
+
         toolbar.setNavigationOnClickListener(v -> finish());
-        // Lấy dữ liệu từ Intent
+
         Product product = (Product) getIntent().getSerializableExtra("product");
 
         // Ánh xạ view
@@ -88,32 +91,45 @@ public class ProductDetailActivity extends AppCompatActivity {
         ratingBarFeedback = findViewById(R.id.ratingBarFeedback);
         btnSendFeedback = findViewById(R.id.btnSendFeedback);
 
-        // Hiển thị thông tin sản phẩm
+
         if (product != null) {
             tvProductName.setText(product.getName());
             tvPrice.setText(product.getPrice() + " USD");
             tvStockStatus.setText("Tình trạng: " + (product.getIsActive() ? "Còn hàng" : "Hết hàng"));
             tvQuantity.setText("Số lượng còn: " + product.getStock());
 
-            // Nếu product.getPrice() là USD (double), bạn cần convert sang VNĐ
-            unitPrice = (product.getPrice().doubleValue() ); // ví dụ: 1 USD = 50.000đ
 
-            Glide.with(this)
-                    .load(product.getImageUrl())
-                    .placeholder(R.drawable.ban1)
-                    .into(imgProduct);
+            unitPrice = (product.getPrice().doubleValue() );
+
+
+            if (product.getImageUrl() != null && !product.getImageUrl().isEmpty()) {
+                try {
+                    byte[] imageBytes = android.util.Base64.decode(product.getImageUrl(), android.util.Base64.DEFAULT);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                    if (bitmap != null) {
+                        imgProduct.setImageBitmap(bitmap);
+                    } else {
+                        imgProduct.setImageResource(R.drawable.produc);
+                    }
+                } catch (Exception e) {
+                    imgProduct.setImageResource(R.drawable.produc);
+                }
+            } else {
+                imgProduct.setImageResource(R.drawable.produc);
+            }
+
         }
 
-        // Hiển thị mặc định
+
         tvSelectedQuantity.setText(String.valueOf(quantity));
         updateTotal();
 
-        // Lấy danh sách feedback khi mở sản phẩm
+
         if (product != null) {
             loadFeedbackList(product.getId());
         }
 
-        // Xử lý gửi feedback
+
         btnSendFeedback.setOnClickListener(v -> {
             String content = edtFeedbackContent.getText().toString().trim();
             int rating = (int) ratingBarFeedback.getRating();
@@ -121,7 +137,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 Toast.makeText(this, "Vui lòng nhập nội dung và chọn số sao!", Toast.LENGTH_SHORT).show();
                 return;
             }
-            // Lấy userId từ SharedPreferences
+
             SharedPreferences prefs = getSharedPreferences("auth", MODE_PRIVATE);
             int userId = prefs.getInt("user_id", -1);
             if (userId == -1) {
@@ -151,7 +167,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             });
         });
 
-        // Nút cộng
+        // Cộng
         btnPlus.setOnClickListener(v -> {
             if (product != null && quantity < product.getStock()) {
                 quantity++;
@@ -160,7 +176,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
-        // Nút trừ
+        //  trừ
         btnMinus.setOnClickListener(v -> {
             if (quantity > 1) {
                 quantity--;
@@ -198,7 +214,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private ApiService getApiService() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8080/api/") // Sửa lại baseUrl nếu cần
+                .baseUrl("http://10.0.2.2:8081/api/") // Sửa lại baseUrl nếu cần
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         return retrofit.create(ApiService.class);
