@@ -94,7 +94,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         if (product != null) {
             tvProductName.setText(product.getName());
-            tvPrice.setText(product.getPrice() + " USD");
+            tvPrice.setText(product.getPrice() + " VND");
             tvStockStatus.setText("Tình trạng: " + (product.getIsActive() ? "Còn hàng" : "Hết hàng"));
             tvQuantity.setText("Số lượng còn: " + product.getStock());
 
@@ -214,7 +214,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private ApiService getApiService() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8081/api/") // Sửa lại baseUrl nếu cần
+                .baseUrl("http://10.0.2.2:8080/api/") // Sửa lại baseUrl nếu cần
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         return retrofit.create(ApiService.class);
