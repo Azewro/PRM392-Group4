@@ -92,4 +92,12 @@ public class ProductServiceImpl implements ProductService {
                 .map(productMapper::toResponse)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<ProductResponse> getProductsByName(String name) {
+        return productRepository.findByNameContainingIgnoreCaseAndIsActiveTrue(name)
+                .stream()
+                .map(productMapper::toResponse)
+                .collect(Collectors.toList());
+    }
 }
