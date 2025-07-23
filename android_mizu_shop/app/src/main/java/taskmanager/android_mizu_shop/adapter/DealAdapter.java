@@ -2,6 +2,8 @@ package taskmanager.android_mizu_shop.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,10 +53,22 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
         holder.tvName.setText(product.getName());
         holder.tvPrice.setText((double) product.getPrice().doubleValue() + " USD");
 
-        Glide.with(holder.itemView.getContext())
-                .load(product.getImageUrl())
-                .placeholder(R.drawable.ban1)
-                .into(holder.imgProduct);
+
+        if (product.getImageUrl() != null && !product.getImageUrl().isEmpty()) {
+            try {
+                byte[] imageBytes = android.util.Base64.decode(product.getImageUrl(), android.util.Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                if (bitmap != null) {
+                    holder.imgProduct.setImageBitmap(bitmap);
+                } else {
+                    holder.imgProduct.setImageResource(R.drawable.produc);
+                }
+            } catch (Exception e) {
+                holder.imgProduct.setImageResource(R.drawable.produc);
+            }
+        } else {
+            holder.imgProduct.setImageResource(R.drawable.produc);
+        }
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ProductDetailActivity.class);
             intent.putExtra("product", product); // cần Serializable hoặc Parcelable

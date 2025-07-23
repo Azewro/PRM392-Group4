@@ -2,6 +2,8 @@ package taskmanager.android_mizu_shop.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,18 +46,28 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CategoryViewHo
         Category category = categoryList.get(position);
         holder.tvCategoryName.setText(category.getName());
 
-        if (holder.imgCategory != null && category.getImageUrl() != null && !category.getImageUrl().isEmpty()) {
-            Glide.with(context)
-                    .load(category.getImageUrl())
-                    .placeholder(R.drawable.ban1)
-                    .into(holder.imgCategory);
+
+        if (category.getImageUrl() != null && !category.getImageUrl().isEmpty()) {
+            try {
+                byte[] imageBytes = android.util.Base64.decode(category.getImageUrl(), android.util.Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                if (bitmap != null) {
+                    holder.imgCategory.setImageBitmap(bitmap);
+                } else {
+                    holder.imgCategory.setImageResource(R.drawable.cate);
+                }
+            } catch (Exception e) {
+                holder.imgCategory.setImageResource(R.drawable.cate);
+            }
         } else {
-            holder.imgCategory.setImageResource(R.drawable.ic_launcher_background);
+            holder.imgCategory.setImageResource(R.drawable.cate);
         }
         Log.d("MenuAdapter", "imgCategory is null? " + (holder.imgCategory == null));
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ProductByCategoryActivity.class);
             intent.putExtra("categoryId", category.getId());
+            Log.d("CATEGORY_ID", "ID: " + category.getId());
+            intent.putExtra("categoryName", category.getName());
             context.startActivity(intent);
         });
 

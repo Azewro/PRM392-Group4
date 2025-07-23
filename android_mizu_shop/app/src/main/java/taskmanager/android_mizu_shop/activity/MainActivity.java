@@ -19,6 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -50,6 +51,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+        LinearLayout searchBar = findViewById(R.id.searchBar);
+        EditText etSearch = findViewById(R.id.etSearch);
+        ImageButton btnSearch = findViewById(R.id.btnSearch);
+
+        View.OnClickListener searchClickListener = v -> {
+            Intent intent = new Intent(MainActivity.this, SearchResultActivity.class);
+            startActivity(intent);
+        };
+        searchBar.setOnClickListener(searchClickListener);
+        etSearch.setOnClickListener(searchClickListener);
+        btnSearch.setOnClickListener(searchClickListener);
+
         FloatingActionButton fab = findViewById(R.id.fabPersonalInfo);
         fab.setOnClickListener(v -> {
             SharedPreferences prefs = getSharedPreferences("auth", Context.MODE_PRIVATE);
@@ -79,17 +92,7 @@ public class MainActivity extends AppCompatActivity {
         });
         ViewPager2 bannerViewPager = findViewById(R.id.bannerViewPager);
 
-        EditText etSearch = findViewById(R.id.etSearch);
-        ImageButton btnSearch = findViewById(R.id.btnSearch);
 
-        btnSearch.setOnClickListener(v -> {
-            String keyword = etSearch.getText().toString().trim();
-            if (!keyword.isEmpty()) {
-                Intent intent = new Intent(MainActivity.this, SearchResultActivity.class);
-                intent.putExtra("keyword", keyword);
-                startActivity(intent);
-            }
-        });
 
 
 

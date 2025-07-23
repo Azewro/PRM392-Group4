@@ -9,6 +9,7 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import taskmanager.android_mizu_shop.model.Product;
 
 public interface ProductRepository {
@@ -17,6 +18,11 @@ public interface ProductRepository {
 
     @GET("/api/products/category/{categoryId}")
     Call<List<Product>> getProductsByCategory(@Header("Authorization") String token, @Path("categoryId") int categoryId);
+    @GET("/api/products/search")
+    Call<List<Product>> searchProductsByName(
+            @Header("Authorization") String token,
+            @Query("name") String name
+    );
 
     @POST("/api/products")
     Call<Product> createProduct(@Header("Authorization") String token, @Body Product product);
@@ -26,4 +32,6 @@ public interface ProductRepository {
 
     @DELETE("/api/products/{id}")
     Call<Void> deleteProduct(@Header("Authorization") String token, @Path("id") int id);
+
+
 } 
