@@ -20,7 +20,6 @@ public class Promotion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String code;
     private Integer discountPercent;
     private LocalDate startDate;
@@ -28,5 +27,6 @@ public class Promotion {
     private BigDecimal minOrderValue;
     private Boolean isActive;
     private LocalDateTime createdAt;
+
 }
 

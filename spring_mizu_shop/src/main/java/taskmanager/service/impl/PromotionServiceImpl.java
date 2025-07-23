@@ -5,26 +5,40 @@ import org.springframework.stereotype.Service;
 import taskmanager.dto.CreatePromotionRequest;
 import taskmanager.dto.PromotionDTO;
 import taskmanager.mapper.PromotionMapper;
+import taskmanager.mapper.impl.PromotionMapperImpl;
 import taskmanager.model.Promotion;
 import taskmanager.repository.PromotionRepository;
 import taskmanager.service.PromotionService;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class PromotionServiceImpl implements PromotionService {
+
+    public PromotionServiceImpl(PromotionRepository promoRepo) {
+        this.promoRepo = promoRepo;
+        this.promoMapper = new PromotionMapperImpl();
+    }
 
     private final PromotionRepository promoRepo;
     private final PromotionMapper promoMapper;
 
     @Override
     public List<PromotionDTO> getAllPromotions() {
-        return promoRepo.findAll().stream()
+        List<Promotion> promotions = promoRepo.findAll();
+
+        promotions.forEach(promo -> {
+            if (promo.getIsActive() == null) {
+                promo.setIsActive(false);
+            }
+        });
+
+        return promotions.stream()
                 .filter(Promotion::getIsActive)
                 .map(promoMapper::toDTO)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override
