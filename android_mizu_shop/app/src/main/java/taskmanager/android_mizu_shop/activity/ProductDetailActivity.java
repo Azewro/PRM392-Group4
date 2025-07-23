@@ -2,6 +2,7 @@ package taskmanager.android_mizu_shop.activity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.Menu;
@@ -21,8 +22,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +36,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import taskmanager.android_mizu_shop.R;
 import taskmanager.android_mizu_shop.adapter.ReviewAdapter;
 import taskmanager.android_mizu_shop.api.ApiService;
+import taskmanager.android_mizu_shop.model.CartItem;
 import taskmanager.android_mizu_shop.model.Product;
 import taskmanager.android_mizu_shop.model.Review;
 import taskmanager.android_mizu_shop.model.ReviewRequest;
@@ -45,9 +48,10 @@ public class ProductDetailActivity extends AppCompatActivity {
     TextView tvProductName, tvPrice, tvStockStatus, tvQuantity, tvSelectedQuantity, tvTotal, tvTotal2;
     TextView btnMinus;
     ImageButton btnPlus;
-    Button btnBuyNow;
+    Button btnBuyNow, btnAddToCart;
 
     private RecyclerView rvFeedbackList;
+    private List<CartItem> cartItemList = new ArrayList<>();
     private ReviewAdapter reviewAdapter;
     private List<Review> reviewList = new ArrayList<>();
     private EditText edtFeedbackContent;
@@ -64,9 +68,10 @@ public class ProductDetailActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        // Nút back
         toolbar.setNavigationOnClickListener(v -> finish());
 
+        // Lấy dữ liệu từ Intent
         Product product = (Product) getIntent().getSerializableExtra("product");
 
         // Ánh xạ view
@@ -81,6 +86,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         btnMinus = findViewById(R.id.btnMinus);
         btnPlus = findViewById(R.id.btnPlus);
         btnBuyNow = findViewById(R.id.btnBuyNow);
+        btnAddToCart = findViewById(R.id.btnAddToCart);  // Add "Add to Cart" button
 
         rvFeedbackList = findViewById(R.id.rvFeedbackList);
         reviewAdapter = new ReviewAdapter(reviewList);
@@ -98,9 +104,8 @@ public class ProductDetailActivity extends AppCompatActivity {
             tvStockStatus.setText("Tình trạng: " + (product.getIsActive() ? "Còn hàng" : "Hết hàng"));
             tvQuantity.setText("Số lượng còn: " + product.getStock());
 
-
-            unitPrice = (product.getPrice().doubleValue() );
-
+            // Nếu product.getPrice() là USD (double), bạn cần convert sang VNĐ
+            unitPrice = (product.getPrice().doubleValue()); // ví dụ: 1 USD = 50.000đ
 
             if (product.getImageUrl() != null && !product.getImageUrl().isEmpty()) {
                 try {
@@ -124,7 +129,59 @@ public class ProductDetailActivity extends AppCompatActivity {
         tvSelectedQuantity.setText(String.valueOf(quantity));
         updateTotal();
 
+        // Button "Mua ngay"
+        btnBuyNow.setOnClickListener(v -> {
+            SharedPreferences prefs = getSharedPreferences("auth", MODE_PRIVATE);
+            int userId = prefs.getInt("user_id", -1); // Get user ID from SharedPreferences
 
+            if (userId == -1) {
+                Toast.makeText(this, "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Kiểm tra nếu cartItemList là null hoặc rỗng
+            if (cartItemList == null) {
+                cartItemList = new ArrayList<>();
+            }
+
+            // Create and add CartItem to the list
+            CartItem cartItem = new CartItem(product.getId(), userId, product.getId(), product.getName(), product.getDescription(),
+                    product.getImageUrl(), product.getPrice().doubleValue(), quantity, "2023-07-23");
+            cartItemList.add(cartItem);
+
+            Intent intent = new Intent(ProductDetailActivity.this, CheckoutActivity.class);
+            intent.putParcelableArrayListExtra("cart", new ArrayList<>(cartItemList));  // Pass cart data
+            startActivity(intent);
+        });
+
+        // Button "Thêm vào giỏ"
+        btnAddToCart.setOnClickListener(v -> {
+            SharedPreferences prefs = getSharedPreferences("auth", MODE_PRIVATE);
+            int userId = prefs.getInt("user_id", -1); // Get user ID from SharedPreferences
+
+            if (userId == -1) {
+                Toast.makeText(this, "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Kiểm tra nếu cartItemList là null hoặc rỗng
+            if (cartItemList == null) {
+                cartItemList = new ArrayList<>();
+            }
+
+            // Create and add CartItem to the list
+            CartItem cartItem = new CartItem(product.getId(), userId, product.getId(), product.getName(), product.getDescription(),
+                    product.getImageUrl(), product.getPrice().doubleValue(), quantity, "2023-07-23");
+            cartItemList.add(cartItem);
+
+            // Lưu giỏ hàng vào SharedPreferences
+            saveCartToSharedPreferences(cartItemList);
+
+            // Hiển thị thông báo thành công
+            Toast.makeText(ProductDetailActivity.this, "Sản phẩm đã được thêm vào giỏ!", Toast.LENGTH_SHORT).show();
+        });
+
+        // Lấy danh sách feedback khi mở sản phẩm
         if (product != null) {
             loadFeedbackList(product.getId());
         }
@@ -184,9 +241,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 updateTotal();
             }
         });
-
     }
-
 
     private void updateTotal() {
         double total = quantity * unitPrice;
@@ -219,6 +274,16 @@ public class ProductDetailActivity extends AppCompatActivity {
                 .build();
         return retrofit.create(ApiService.class);
     }
+
+    // Lưu giỏ hàng vào SharedPreferences
+    private void saveCartToSharedPreferences(List<CartItem> cartItemList) {
+        SharedPreferences prefs = getSharedPreferences("cart", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(cartItemList); // Chuyển đổi List<CartItem> thành JSON
+        editor.putString("cartItems", json);
+        editor.apply(); // Lưu vào SharedPreferences
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.product_detail_menu, menu);
@@ -243,5 +308,4 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 }

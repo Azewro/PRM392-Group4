@@ -1,19 +1,25 @@
 package taskmanager.android_mizu_shop.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.Spinner;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +41,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private List<CartItem> cartItemList = new ArrayList<>();
     private TextView textViewTotal;
     private Button buttonCheckout, buttonApplyCoupon;
+    private ImageButton buttonBack;
     private AutoCompleteTextView spinnerCoupons;
     private List<Promotion> promotionList = new ArrayList<>();
     private ArrayAdapter<String> couponAdapter;
@@ -46,22 +53,58 @@ public class CheckoutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
 
+        // Lấy dữ liệu giỏ hàng từ Intent
         ArrayList<CartItem> cartItems = getIntent().getParcelableArrayListExtra("cart");
-        if (cartItems != null) {
-            // Use the cart data to populate RecyclerView or display items
+
+        // Kiểm tra nếu cartItems có hợp lệ không
+        if (cartItems != null && !cartItems.isEmpty()) {
+            cartItemList = cartItems;  // Sử dụng dữ liệu giỏ hàng để hiển thị
+        } else {
+            // Nếu không có dữ liệu từ Intent, khởi tạo giỏ hàng mới (trường hợp chưa có dữ liệu)
+            cartItemList = new ArrayList<>();
+            Toast.makeText(this, "Giỏ hàng rỗng, vui lòng thêm sản phẩm.", Toast.LENGTH_SHORT).show();
         }
 
         recyclerViewCheckout = findViewById(R.id.recyclerViewCheckout);
         textViewTotal = findViewById(R.id.textViewTotal);
         buttonCheckout = findViewById(R.id.buttonCheckout);
         spinnerCoupons = findViewById(R.id.spinnerCoupons);
-        buttonApplyCoupon = findViewById(R.id.buttonApplyCoupon);
+        buttonBack = findViewById(R.id.buttonBack);
 
-        // TODO: Replace with your actual cart list (from backend/cart screen)
-        cartItemList = getDemoCartItems();
+        // Set up CartAdapter (with product images)
+        cartAdapter = new CartAdapter(cartItemList, new CartAdapter.OnQuantityChangeListener() {
+            @Override
+            public void onIncrease(CartItem item) {
+                item.setQuantity(item.getQuantity() + 1);
+                cartAdapter.notifyDataSetChanged();
+                updateTotal();
+            }
 
-        // Set up CartAdapter (hide +/− buttons)
-        cartAdapter = new CartAdapter(cartItemList, null, false);
+            public void onDecrease(CartItem item) {
+                if (item.getQuantity() > 1) {  // Đảm bảo quantity không giảm dưới 1
+                    item.setQuantity(item.getQuantity() - 1);
+                    cartAdapter.notifyDataSetChanged();
+                    updateTotal();
+                } else if (item.getQuantity() == 1) {
+                    // Show confirmation dialog when quantity is reduced to 0
+                    new AlertDialog.Builder(CheckoutActivity.this)
+                            .setTitle("Xóa sản phẩm")
+                            .setMessage("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng không?")
+                            .setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Remove item from cart when user confirms
+                                    cartItemList.remove(item);
+                                    cartAdapter.notifyDataSetChanged();
+                                    updateTotal();
+                                    Toast.makeText(CheckoutActivity.this, "Sản phẩm đã bị xóa khỏi giỏ hàng", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .setNegativeButton("Không", null)
+                            .show();
+                }
+            }
+        });
         recyclerViewCheckout.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewCheckout.setAdapter(cartAdapter);
 
@@ -70,13 +113,24 @@ public class CheckoutActivity extends AppCompatActivity {
         promotionRepository = ApiService.getPromotionRepository();
         loadPromotions();
 
-        buttonApplyCoupon.setOnClickListener(v -> {
-            String code = spinnerCoupons.toString().trim();
-            applyCoupon(code);
-        });
-
         buttonCheckout.setOnClickListener(v -> {
             Toast.makeText(this, "Thanh toán thành công!", Toast.LENGTH_SHORT).show();
+        });
+
+        buttonBack.setOnClickListener(v -> {
+            // Xóa danh sách cartItemList khi quay lại
+            if (cartItemList != null) {
+                cartItemList.clear();  // Xóa tất cả các phần tử trong giỏ hàng
+            }
+            // Go back to the ProductDetailActivity when back button is pressed
+            Intent intent = new Intent(CheckoutActivity.this, ProductDetailActivity.class);
+            startActivity(intent);
+            finish(); // Close CheckoutActivity
+        });
+
+        spinnerCoupons.setOnItemClickListener((parent, view, position, id) -> {
+            String couponCode = parent.getItemAtPosition(position).toString();
+            applyCoupon(couponCode);
         });
     }
 
@@ -118,7 +172,6 @@ public class CheckoutActivity extends AppCompatActivity {
                 }
             }
 
-
             @Override
             public void onFailure(Call<List<Promotion>> call, Throwable t) {
                 Toast.makeText(CheckoutActivity.this, "Lỗi kết nối server", Toast.LENGTH_SHORT).show();
@@ -126,12 +179,10 @@ public class CheckoutActivity extends AppCompatActivity {
         });
     }
 
-
     private String getTokenFromPrefs() {
         SharedPreferences prefs = getSharedPreferences("auth", Context.MODE_PRIVATE);
         return prefs.getString("token", "");
     }
-
 
     private void applyCoupon(String code) {
         Promotion appliedPromo = null;
@@ -161,15 +212,13 @@ public class CheckoutActivity extends AppCompatActivity {
         textViewTotal.setText("Tổng: " + String.format("%,.0f", totalAfterDiscount) + "đ");
     }
 
-    // For demo/testing only. Replace with real data from backend/cart
-    private List<CartItem> getDemoCartItems() {
-        List<CartItem> list = new ArrayList<>();
-        list.add(new CartItem(1, 2, 1, "Kem Dưỡng Ẩm Neutrogena Hydro Boost", "Dưỡng ẩm, phục hồi da",
-                "https://cdn.tgdd.vn/Products/Images/5473/233951/serum-duong-am-neutrogena-hydro-boost-water-gel-50ml-8-1.jpg", 325000, 1, ""));
-        list.add(new CartItem(2, 2, 2, "Sữa Rửa Mặt Hada Labo", "Làm sạch sâu, dịu nhẹ",
-                "https://myphamthiennhien.vn/wp-content/uploads/2021/05/sua-rua-mat-hada-labo-advanced-nourish-hyaluronic-acid-face-wash-100g-2.jpg", 180000, 2, ""));
-        list.add(new CartItem(3, 2, 3, "Serum Vitamin C Melano", "Làm sáng da, mờ thâm",
-                "https://cdn.tgdd.vn/Products/Images/5473/236016/serum-duong-da-melano-cc-vitamin-c-20ml-1.jpg", 350000, 1, ""));
-        return list;
+    private void displayImage(String imageUrl, ImageView imageView) {
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            Glide.with(this)
+                    .load(imageUrl)
+                    .into(imageView);
+        } else {
+            imageView.setImageResource(R.drawable.ic_launcher_background);
+        }
     }
 }

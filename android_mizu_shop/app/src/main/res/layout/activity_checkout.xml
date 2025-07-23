@@ -7,37 +7,58 @@
     android:layout_height="match_parent"
     android:background="#F9F9FC">
 
-    <!-- Top Bar -->
-    <TextView
-        android:id="@+id/textViewCheckoutTitle"
+    <!-- Top Bar with Back Button and Title -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutTopBar"
         android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:gravity="center"
-        android:text="Thanh toán"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
+        android:layout_height="60dp"
         android:background="#8C5DF6"
-        android:textSize="18sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <!-- Cart Items List -->
+        <!-- Back Button -->
+        <ImageButton
+            android:id="@+id/buttonBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@android:color/transparent"
+            android:src="@android:drawable/ic_menu_revert"
+            android:contentDescription="Quay lại"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="8dp"/>
 
-    <!-- Promotion Input Row -->
+        <!-- Title: Thanh toán (Checkout) -->
+        <TextView
+            android:id="@+id/textViewCheckoutTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thanh toán"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!-- Cart Items List (RecyclerView) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCheckout"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/layoutTopBar"
         app:layout_constraintBottom_toTopOf="@id/layoutCoupon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewCheckoutTitle" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"/>
 
+    <!-- Coupon Input Row (AutoCompleteTextView) -->
     <LinearLayout
         android:id="@+id/layoutCoupon"
         android:layout_width="0dp"
@@ -63,20 +84,9 @@
             android:textSize="15sp"
             android:dropDownHeight="200dp" />
 
-        <Button
-            android:id="@+id/buttonApplyCoupon"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="Áp dụng"
-            android:textColor="#FFF"
-            android:backgroundTint="#8C5DF6"
-            android:background="@drawable/rounded_button_purple"
-            android:layout_marginStart="8dp"/>
     </LinearLayout>
 
-
-
-    <!-- Bottom Bar -->
+    <!-- Bottom Bar (Total and Checkout Button) -->
     <LinearLayout
         android:id="@+id/layoutBottomBar"
         android:layout_width="0dp"
@@ -110,4 +120,5 @@
             android:layout_marginStart="8dp"
             android:background="@drawable/rounded_button_purple"/>
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

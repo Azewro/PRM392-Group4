@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F9F9FC">
+
+    <!-- Top Bar with Back Button and Title -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutTopBar"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="#8C5DF6"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageButton
+            android:id="@+id/buttonBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@android:color/transparent"
+            android:src="@android:drawable/ic_menu_revert"
+            android:contentDescription="Quay lại"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="8dp"/>
+
+        <TextView
+            android:id="@+id/textViewOrderHistoryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lịch sử đơn hàng"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- RecyclerView for Order History -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewOrderHistory"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintTop_toBottomOf="@id/layoutTopBar"
+        app:layout_constraintBottom_toTopOf="@id/layoutBottomBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:listitem="@layout/item_order_history"/>
+
+    <!-- Bottom Navigation with Swipe Indicator, Total, and Checkout Button -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutBottomBar"
+        android:layout_width="0dp"
+        android:layout_height="90dp"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Swipe indicator bar -->
+        <View
+            android:id="@+id/swipeIndicator"
+            android:layout_width="50dp"
+            android:layout_height="5dp"
+            android:background="@drawable/swipe_indicator_bg"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="7dp"/>
+
+        <!-- Total and Checkout Row -->
+        <LinearLayout
+            android:id="@+id/layoutTotalCheckout"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            app:layout_constraintTop_toBottomOf="@id/swipeIndicator"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/textViewTotal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Tổng: 1.250.000đ"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/buttonCheckout"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:backgroundTint="#8C5DF6"
+                android:text="Thanh toán"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/rounded_button_purple"/>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
